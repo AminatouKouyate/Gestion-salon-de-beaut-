@@ -25,7 +25,8 @@
                             <span class="badge bg-primary rounded-pill">{{ $service->appointments_count }}</span>
                         </li>
                     @empty
-                        <li class="list-group-item">Aucun service demandé pour le moment.</li>
+                        <li class="list-group-item"> service demandé pour le moment.</li>
+                        <li>un aute </li>
                     @endforelse
                 </ul>
             </div>
