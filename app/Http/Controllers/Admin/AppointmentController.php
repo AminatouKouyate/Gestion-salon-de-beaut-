@@ -19,9 +19,9 @@ class AppointmentController extends Controller
 
     public function create()
     {
-        $clients = Client::all();
-        $employees = Employee::all();
-        $services = Service::all();
+        $clients = Client::orderBy('name')->get(['id', 'name']);
+        $employees = Employee::orderBy('name')->get(['id', 'name']);
+        $services = Service::orderBy('name')->get(['id', 'name']);
         return view('admin.appointments.create', compact('clients', 'employees', 'services'));
     }
 
@@ -47,9 +47,9 @@ class AppointmentController extends Controller
 
     public function edit(Appointment $appointment)
     {
-        $clients = Client::all();
-        $employees = Employee::all();
-        $services = Service::all();
+        $clients = Client::orderBy('name')->get(['id', 'name']);
+        $employees = Employee::orderBy('name')->get(['id', 'name']);
+        $services = Service::orderBy('name')->get(['id', 'name']);
         return view('admin.appointments.edit', compact('appointment', 'clients', 'employees', 'services'));
     }
 

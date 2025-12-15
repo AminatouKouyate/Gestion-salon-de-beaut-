@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\EmployeeController as AdminEmployeeController;
 use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Employee\EmployeeServiceController;
+use App\Http\Controllers\Admin\StockController as AdminStockController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Employee\LeaveRequestController;
 use App\Http\Controllers\Client\ChatbotController;
@@ -131,8 +132,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('services', AdminServiceController::class);
     Route::resource('appointments', AdminAppointmentController::class);
     Route::resource('payments', AdminPaymentController::class);
-    // Pour le stock, un CRUD complet est aussi une bonne pratique
-    // Route::resource('stocks', StockController::class);
+    Route::resource('stocks', AdminStockController::class);
 
     Route::get('reports', [AdminReportController::class, 'index'])->name('reports.index');
 

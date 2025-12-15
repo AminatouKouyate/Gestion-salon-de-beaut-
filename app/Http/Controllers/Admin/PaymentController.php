@@ -12,14 +12,14 @@ class PaymentController extends Controller
 {
     public function index()
     {
-        $payments = Payment::with(['client', 'appointment'])->latest()->paginate(10);
+        $payments = Payment::with(['client','appointment'])->latest()->paginate(10);
         return view('admin.payments.index', compact('payments'));
     }
 
     public function create()
     {
-        $clients = Client::all();
-        $appointments = Appointment::whereDoesntHave('payment')->get(); // On ne montre que les RDV non payés
+        $clients = Client::orderBy('name')->get(['id', 'name']);
+        $appointments = Appointment::orderBy('scheduled_at', 'desc')->get(['id', 'scheduled_at']);
         return view('admin.payments.create', compact('clients', 'appointments'));
     }
 
@@ -27,7 +27,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'appointment_id' => 'required|exists:appointments,id|unique:payments,appointment_id',
+            'appointment_id' => 'required|exists:appointments,id',
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:pending,paid'
         ]);
@@ -39,9 +39,8 @@ class PaymentController extends Controller
 
     public function edit(Payment $payment)
     {
-        $clients = Client::all();
-        // Permet de modifier le RDV associé au paiement, ou de le garder
-        $appointments = Appointment::whereDoesntHave('payment')->orWhere('id', $payment->appointment_id)->get();
+        $clients = Client::orderBy('name')->get(['id', 'name']);
+        $appointments = Appointment::orderBy('scheduled_at', 'desc')->get(['id', 'scheduled_at']);
         return view('admin.payments.edit', compact('payment', 'clients', 'appointments'));
     }
 
@@ -49,7 +48,7 @@ class PaymentController extends Controller
     {
         $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'appointment_id' => 'required|exists:appointments,id|unique:payments,appointment_id,' . $payment->id,
+            'appointment_id' => 'required|exists:appointments,id',
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:pending,paid'
         ]);

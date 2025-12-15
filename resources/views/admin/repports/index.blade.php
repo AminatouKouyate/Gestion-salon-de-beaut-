@@ -1,50 +1,75 @@
-@extends('admin.layouts.master')
+@extends('admin.layouts.app')
 
 @section('content')
-<h2 class="mb-4">Rapports & Statistiques</h2>
+<div class="d-flex justify-content-between mb-3">
+    <h2>Liste des paiements</h2>
+    <a href="{{ route('admin.payments.create') }}" class="btn btn-primary">Ajouter un paiement</a>
+</div>
 
-<div class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card text-white bg-primary h-100">
-            <div class="card-body">
-                <h5 class="card-title">Chiffre d'affaires total (paiements payés)</h5>
-                <h3 class="card-text">{{ number_format($totalRevenue, 2) }} €</h3>
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">Filtrer les paiements</h5>
+        <form method="GET" action="{{ route('admin.payments.index') }}">
+            <div class="row">
+                <div class="col-md-5">
+                    <label for="client_id">Client</label>
+                    <select name="client_id" id="client_id" class="form-control">
+                        <option value="">Tous les clients</option>
+                        @foreach($clients as $client)
+                            <option value="{{ $client->id }}" {{ request('client_id') == $client->id ? 'selected' : '' }}>{{ $client->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label for="status">Statut du paiement</label>
+                    <select name="status" id="status" class="form-control">
+                        <option value="">Tous les statuts</option>
+                        <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>En attente</option>
+                        <option value="paid" {{ request('status') == 'paid' ? 'selected' : '' }}>Payé</option>
+                        <option value="failed" {{ request('status') == 'failed' ? 'selected' : '' }}>Échoué</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Filtrer</button>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-header bg-info text-white">
-                <h5 class="card-title mb-0">Services les plus demandés</h5>
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    @forelse($topServices as $service)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ $service->name }}
-                            <span class="badge bg-primary rounded-pill">{{ $service->appointments_count }}</span>
-                        </li>
-                    @empty
-                        <li class="list-group-item"> service demandé pour le moment.</li>
-                        <li>un aute </li>
-                    @endforelse
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card h-100">
-            <div class="card-header bg-success text-white">
-                <h5 class="card-title mb-0">Performance des employés (RDV traités)</h5>
-            </div>
-            <div class="card-body">
-                <ul class="list-group list-group-flush">
-                    @foreach($employeePerformance as $emp)
-                        <li class="list-group-item d-flex justify-content-between align-items-center">{{ $emp->name }} <span class="badge bg-success rounded-pill">{{ $emp->appointments_count }}</span></li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+        </form>
     </div>
 </div>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Client</th>
+            <th>Rendez-vous</th>
+            <th>Montant (€)</th>
+            <th>Date</th>
+            <th>Statut</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach($payments as $payment)
+        <tr>
+            <td>{{ $payment->id }}</td>
+            <td>{{ $payment->client->name ?? 'Client supprimé' }}</td>
+            <td><a href="{{ route('admin.appointments.edit', $payment->appointment_id) }}">{{ $payment->appointment->scheduled_at->format('d/m/Y H:i') }}</a></td>
+            <td>{{ number_format($payment->amount, 2) }}</td>
+            <td>{{ $payment->created_at->format('d/m/Y') }}</td>
+            <td>{{ $payment->status }}</td>
+            <td>
+                <a href="{{ route('admin.payments.edit', $payment->id) }}" class="btn btn-sm btn-warning">Modifier</a>
+                <form action="{{ route('admin.payments.destroy', $payment->id) }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('DELETE')
+                    <button class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce paiement ?')">Supprimer</button>
+                </form>
+            </td>
+        </tr>
+        @endforeach
+    </tbody>
+</table>
+
+{{ $payments->appends(request()->query())->links() }}
 @endsection

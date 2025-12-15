@@ -1,6 +1,5 @@
 <?php
 
-namespace App\Http\Controllers\Client;
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -10,20 +9,12 @@ use Illuminate\Support\Facades\Hash;
 
 class ClientController extends Controller
 {
-    /**
-     * Affiche une liste paginée des clients.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
     {
-        // Récupère les clients avec pagination pour ne pas surcharger la page
         $clients = Client::paginate(10);
         return view('admin.clients.index', compact('clients'));
     }
 
-        // Retourne la vue en lui passant la variable $clients
-        return view('clients.index', compact('clients'));
     public function create()
     {
         return view('admin.clients.create');
