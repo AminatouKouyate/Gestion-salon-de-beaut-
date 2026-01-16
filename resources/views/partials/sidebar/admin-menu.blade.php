@@ -1,72 +1,74 @@
-<li class="nav-label">Administration</li>
-
-<li>
-    <a href="{{ route('admin.clients.index') }}">
-        <i class="icon-speedometer"></i>
-        <span>Dashboard</span>
-    </a>
-</li>
-
-<li>
-    <a href="{{ route('admin.clients.index') }}">
-        <i class="icon-user"></i>
-        <span>Clients</span>
-    </a>
-</li>
-
-<li>
-    <a href="{{ route('admin.services.index') }}">
-        <i class="icon-layers"></i>
-        <span>Services</span>
-    </a>
-</li>
-
-<li>
-    <a href="{{ route('admin.appointments.index') }}">
-        <i class="icon-calendar"></i>
-        <span>Rendez-vous</span>
-    </a>
-</li>
-
-<li>
-    <a href="#" onclick="event.preventDefault(); document.getElementById('admin-logout-form').submit();">
-        <i class="icon-logout"></i>
-        <span>Déconnexion</span>
-    </a>
-    <form id="admin-logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-</li>
 
 
-
-
-
-<nav class="sidebar">
-    <ul class="list-unstyled components">
-        <li>
-            <a href="{{ route('admin.dashboard') }}">Tableau de bord</a>
+        <!-- Label -->
+        <li class="nav-label text-uppercase text-muted mb-3">
+            Administration
         </li>
-        <li>
-            <a href="{{ route('admin.employees.index') }}">Employés</a>
+
+        <!-- Dashboard -->
+        <li class="mb-2">
+            <a href="{{ route('admin.dashboard') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-speedometer2 me-2"></i>
+                <span>Tableau de bord</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.clients.index') }}">Clients</a>
+
+        <!-- Employés -->
+        <li class="mb-2">
+            <a href="{{ route('admin.employees.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-people me-2"></i>
+                <span>Employés</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.services.index') }}">Services</a>
+
+        <!-- Clients -->
+        <li class="mb-2">
+            <a href="{{ route('admin.clients.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-person me-2"></i>
+                <span>Clients</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.appointments.index') }}">Rendez-vous</a>
+
+        <!-- Services -->
+        <li class="mb-2">
+            <a href="{{ route('admin.services.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-layers me-2"></i>
+                <span>Services</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.payments.index') }}">Paiements</a>
+
+        <!-- Rendez-vous -->
+        <li class="mb-2">
+            <a href="{{ route('admin.appointments.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-calendar-check me-2"></i>
+                <span>Rendez-vous</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.stocks.index') }}">Stock</a>
+
+        <!-- Paiements -->
+        <li class="mb-2">
+            <a href="{{ route('admin.payments.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-credit-card me-2"></i>
+                <span>Paiements</span>
+            </a>
         </li>
-        <li>
-            <a href="{{ route('admin.reports.index') }}">Rapports</a>
+
+        <!-- Stock -->
+        <li class="mb-2">
+            <a href="{{ route('admin.stocks.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-basket me-2"></i>
+                <span>Stock</span>
+            </a>
         </li>
-    </ul>
-</nav>
+
+        <!-- Rapports -->
+        <li class="mb-2">
+            <a href="{{ route('admin.reports.index') }}" class="text-white text-decoration-none d-flex align-items-center">
+                <i class="bi bi-bar-chart-line me-2"></i>
+                <span>Rapports</span>
+            </a>
+        </li>
+
+
+<!-- Bootstrap Icons CDN (à inclure dans ton master layout si pas déjà fait) -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Ajouter un employé</h1>
     <a href="{{ route('admin.employees.index') }}" class="btn btn-secondary">Retour à la liste</a>
@@ -39,6 +41,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
+    </div>
+</div>
     </div>
 </div>
 @endsection

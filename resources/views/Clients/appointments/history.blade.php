@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
+                <a href="{{ route('client.appointments.index') }}" class="btn btn-secondary">
                     <i class="fa fa-arrow-left mr-2"></i>Retour
                 </a>
             </div>
@@ -51,7 +51,7 @@
                                             </td>
                                             <td>{{ $appointment->service->name ?? 'N/A' }}</td>
                                             <td>{{ $appointment->employee->name ?? 'N/A' }}</td>
-                                            <td>{{ $appointment->service->price ?? 0 }}€</td>
+                                            <td>{{ $appointment->service->price ?? 0 }} FCFA</td>
                                             <td>
                                                 @switch($appointment->status)
                                                     @case('pending')
@@ -78,11 +78,11 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                <a href="{{ route('appointments.show', $appointment) }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('client.appointments.show', $appointment) }}" class="btn btn-sm btn-info">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 @if($appointment->payment && $appointment->payment->status == 'completed')
-                                                    <a href="{{ route('payments.invoice', $appointment->payment) }}" class="btn btn-sm btn-secondary">
+                                                    <a href="{{ route('client.payments.invoice', $appointment->payment) }}" class="btn btn-sm btn-secondary">
                                                         <i class="fa fa-file-pdf-o"></i>
                                                     </a>
                                                 @endif

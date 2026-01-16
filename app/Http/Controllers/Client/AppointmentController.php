@@ -8,9 +8,13 @@ use App\Models\Service;
 use App\Models\Employee;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Services\ClientNotificationService;
 
 class AppointmentController extends Controller
 {
+    public function __construct(
+        protected ClientNotificationService $notificationService
+    ) {}
     public function index()
     {
         $client = Auth::guard('clients')->user();
@@ -48,16 +52,16 @@ class AppointmentController extends Controller
         $request->validate([
             'service_id' => 'required|exists:services,id',
             'employee_id' => 'nullable|exists:employees,id',
-            'date' => 'required|date|after:today',
-            'time' => 'required',
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
             'notes' => 'nullable|string',
         ]);
 
         $client = Auth::guard('clients')->user();
+        $scheduledAt = $request->date . ' ' . $request->time;
 
         $existingAppointment = Appointment::where('employee_id', $request->employee_id)
-            ->where('date', $request->date)
-            ->where('time', $request->time)
+            ->where('scheduled_at', $scheduledAt)
             ->whereIn('status', ['pending', 'confirmed'])
             ->first();
 
@@ -65,17 +69,18 @@ class AppointmentController extends Controller
             return back()->with('error', 'Ce créneau est déjà réservé. Veuillez choisir un autre horaire.');
         }
 
-        Appointment::create([
+        $appointment = Appointment::create([
             'client_id' => $client->id,
             'service_id' => $request->service_id,
             'employee_id' => $request->employee_id,
-            'date' => $request->date,
-            'time' => $request->time,
+            'scheduled_at' => $scheduledAt,
             'status' => 'pending',
             'notes' => $request->notes,
         ]);
 
-        return redirect()->route('appointments.index')->with('success', 'Rendez-vous réservé avec succès');
+        $this->notificationService->notifyAppointmentBooked($appointment);
+
+        return redirect()->route('client.appointments.index')->with('success', 'Rendez-vous réservé avec succès');
     }
 
     public function show(Appointment $appointment)
@@ -111,14 +116,35 @@ class AppointmentController extends Controller
         $data = $request->validate([
             'service_id' => 'required|exists:services,id',
             'employee_id' => 'nullable|exists:employees,id',
-            'date' => 'required|date|after:today',
-            'time' => 'required',
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
             'notes' => 'nullable|string',
         ]);
 
-        $appointment->update($data);
+        $scheduledAt = $request->date . ' ' . $request->time;
 
-        return redirect()->route('appointments.index')->with('success', 'Rendez-vous modifié avec succès');
+        if ($request->employee_id) {
+            $existingAppointment = Appointment::where('employee_id', $request->employee_id)
+                ->where('scheduled_at', $scheduledAt)
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->where('id', '!=', $appointment->id)
+                ->first();
+
+            if ($existingAppointment) {
+                return back()->with('error', 'Ce créneau est déjà réservé. Veuillez choisir un autre horaire.');
+            }
+        }
+
+        $appointment->update([
+            'service_id' => $data['service_id'],
+            'employee_id' => $data['employee_id'],
+            'scheduled_at' => $scheduledAt,
+            'notes' => $data['notes'],
+        ]);
+
+        $this->notificationService->notifyAppointmentUpdated($appointment);
+
+        return redirect()->route('client.appointments.index')->with('success', 'Rendez-vous modifié avec succès');
     }
 
     public function destroy(Appointment $appointment)
@@ -131,7 +157,9 @@ class AppointmentController extends Controller
 
         $appointment->update(['status' => 'cancelled']);
 
-        return redirect()->route('appointments.index')->with('success', 'Rendez-vous annulé');
+        $this->notificationService->notifyAppointmentCancelled($appointment);
+
+        return redirect()->route('client.appointments.index')->with('success', 'Rendez-vous annulé');
     }
 
     public function getAvailableSlots(Request $request)
@@ -164,5 +192,16 @@ class AppointmentController extends Controller
         if ($appointment->client_id !== $client->id) {
             abort(403, 'Accès non autorisé');
         }
+    }
+
+    public function getEmployeesForService(Request $request)
+    {
+        $request->validate(['service_id' => 'required|exists:services,id']);
+
+        $service = Service::with(['employees' => function ($q) {
+            $q->where('is_active', true);
+        }])->findOrFail($request->service_id);
+
+        return response()->json($service->employees);
     }
 }

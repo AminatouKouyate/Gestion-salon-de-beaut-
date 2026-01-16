@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -24,7 +24,7 @@
                             <option value="">-- Sélectionner un service --</option>
                             @foreach($services as $service)
                                 <option value="{{ $service->id }}" data-duration="{{ $service->duration }}">
-                                    {{ $service->name }} ({{ $service->duration }} min) - {{ $service->price }}€
+                                    {{ $service->name }} ({{ $service->duration }} min) - {{ $service->price }} FCFA
                                 </option>
                             @endforeach
                         </select>

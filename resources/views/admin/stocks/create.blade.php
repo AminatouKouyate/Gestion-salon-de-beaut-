@@ -1,34 +1,38 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Ajouter un produit au stock</h1>
-    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">Retour à la liste</a>
-</div>
+<div class="content-body">
+    <div class="container-fluid">
 
-<div class="card">
-    <div class="card-body">
+        <h1 class="mb-4">Ajouter un produit</h1>
+
         <form action="{{ route('admin.stocks.store') }}" method="POST">
             @csrf
+
             <div class="mb-3">
-                <label for="product_name" class="form-label">Nom du produit</label>
-                <input type="text" name="product_name" id="product_name" class="form-control @error('product_name') is-invalid @enderror" value="{{ old('product_name') }}" required>
-                @error('product_name')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <label>Nom du produit</label>
+                <input type="text" name="name" class="form-control" required>
             </div>
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label for="quantity" class="form-label">Quantité</label>
-                    <input type="number" name="quantity" id="quantity" class="form-control @error('quantity') is-invalid @enderror" value="{{ old('quantity', 0) }}" required min="0">
-                    @error('quantity')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label for="alert_quantity" class="form-label">Seuil d'alerte</label>
-                    <input type="number" name="alert_quantity" id="alert_quantity" class="form-control @error('alert_quantity') is-invalid @enderror" value="{{ old('alert_quantity', 0) }}" required min="0">
-                    @error('alert_quantity')<div class="invalid-feedback">{{ $message }}</div>@enderror
-                </div>
+
+            <div class="mb-3">
+                <label>Catégorie</label>
+                <input type="text" name="category" class="form-control">
             </div>
-            <button type="submit" class="btn btn-primary">Ajouter</button>
+
+            <div class="mb-3">
+                <label>Quantité</label>
+                <input type="number" name="quantity" class="form-control" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Seuil d’alerte</label>
+                <input type="number" name="alert_threshold" class="form-control" min="0" required>
+            </div>
+
+            <button class="btn btn-success">Enregistrer</button>
+            <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">Annuler</a>
         </form>
+
     </div>
 </div>
 @endsection

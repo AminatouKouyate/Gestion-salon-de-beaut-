@@ -31,7 +31,7 @@
                             @error('description')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="form-group">
-                            <label for="price">Prix (€)</label>
+                            <label for="price">Prix (FCFA)</label>
                             <input type="number" step="0.01" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" required>
                             @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>

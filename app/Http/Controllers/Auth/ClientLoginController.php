@@ -5,61 +5,73 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class ClientLoginController extends Controller
 {
     /**
-     * Affiche le formulaire de connexion.
+     * Where to redirect clients after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = '/client/dashboard';
+
+    /**
+     * Show the application's login form.
+     *
+     * @return \Illuminate\View\View
      */
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('auth.client-login');
     }
 
     /**
-     * Gère une requête d'authentification.
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('clients');
+    }
+
+    /**
+     * Handle an authentication attempt.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
-        // Tente de connecter l'utilisateur avec le guard clients
-        if (Auth::guard('clients')->attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended(route('client.dashboard'));
+        if (! $this->guard()->attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
         }
 
-        // Tente de connecter l'utilisateur avec le guard par défaut (admin)
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        $request->session()->regenerate();
 
-            // Redirige en fonction du rôle
-            $user = Auth::user();
-            if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.clients.index'));
-            }
-
-            return redirect()->intended(route('client.dashboard'));
-        }
-
-        return back()->withErrors([
-            'email' => 'Les informations d\'identification fournies ne correspondent pas à nos enregistrements.',
-        ])->onlyInput('email');
+        return redirect()->intended($this->redirectTo);
     }
 
     /**
-     * Déconnecte le client.
+     * Log the user out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function logout(Request $request)
     {
-        Auth::guard('clients')->logout();
-
+        $this->guard()->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
         return redirect('/');
     }
 }

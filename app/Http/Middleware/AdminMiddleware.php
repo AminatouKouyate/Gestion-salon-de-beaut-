@@ -6,20 +6,25 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use App\Models\User;
 
 class AdminMiddleware
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
+        // Vérifier que l'utilisateur est connecté via le guard web (admin)
+        if (!Auth::guard('web')->check()) {
+            return redirect()->route('login');
         }
 
-        abort(403, 'Accès refusé. Vous devez être un administrateur pour accéder à cette page.');
+        // Vérifier que l'utilisateur est bien un admin
+        if (Auth::guard('web')->user()->role !== User::ROLE_ADMIN) {
+            abort(403, 'Accès refusé : droits administrateur requis.');
+        }
+
+        return $next($request);
     }
 }

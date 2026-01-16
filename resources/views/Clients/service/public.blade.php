@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -32,7 +32,7 @@
                             <h5>{{ $service->name }}</h5>
                             <p class="text-muted small mb-2">{{ $service->description ?? '' }}</p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="h5 text-primary mb-0">{{ $service->price }}€</span>
+                                <span class="h5 text-primary mb-0">{{ $service->price }} FCFA</span>
                                 <span class="badge badge-secondary">{{ $service->duration }} min</span>
                             </div>
                         </div>

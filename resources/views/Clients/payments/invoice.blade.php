@@ -123,9 +123,12 @@
 <body>
     <div class="no-print" style="margin-bottom: 20px;">
         <button onclick="window.print()" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px;">
-            Imprimer / Télécharger PDF
+            Imprimer
         </button>
-        <a href="{{ route('payments.index') }}" style="padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+        <a href="{{ route('client.payments.invoice.download', $payment) }}" style="padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
+            Télécharger PDF
+        </a>
+        <a href="{{ route('client.payments.index') }}" style="padding: 10px 20px; background: #6c757d; color: white; text-decoration: none; border-radius: 5px; margin-left: 10px;">
             Retour
         </a>
     </div>
@@ -185,7 +188,7 @@
                     @endif
                 </td>
                 <td>{{ $payment->appointment->service->duration ?? 0 }} min</td>
-                <td style="text-align: right;">{{ number_format($payment->amount, 2, ',', ' ') }} €</td>
+                <td style="text-align: right;">{{ number_format($payment->amount, 2, ',', ' ') }} FCFA</td>
             </tr>
         </tbody>
     </table>
@@ -194,15 +197,15 @@
         <table>
             <tr>
                 <td>Sous-total</td>
-                <td style="text-align: right;">{{ number_format($payment->amount, 2, ',', ' ') }} €</td>
+                <td style="text-align: right;">{{ number_format($payment->amount, 2, ',', ' ') }} FCFA</td>
             </tr>
             <tr>
                 <td>TVA (20%)</td>
-                <td style="text-align: right;">{{ number_format($payment->amount * 0.2, 2, ',', ' ') }} €</td>
+                <td style="text-align: right;">{{ number_format($payment->amount * 0.2, 2, ',', ' ') }} FCFA</td>
             </tr>
             <tr class="total-row">
                 <td>Total TTC</td>
-                <td style="text-align: right;">{{ number_format($payment->amount * 1.2, 2, ',', ' ') }} €</td>
+                <td style="text-align: right;">{{ number_format($payment->amount * 1.2, 2, ',', ' ') }} FCFA</td>
             </tr>
         </table>
     </div>

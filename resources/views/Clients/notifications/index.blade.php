@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -11,7 +11,7 @@
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                 @if($notifications->where('read', false)->count() > 0)
-                <form action="{{ route('notifications.markAllRead') }}" method="POST">
+                <form action="{{ route('client.notifications.markAllRead') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-outline-primary">
                         <i class="fa fa-check-double mr-2"></i>Tout marquer comme lu
@@ -74,7 +74,7 @@
                                             </small>
                                         </div>
                                         @if(!$notification->read)
-                                        <form action="{{ route('notifications.markRead', $notification) }}" method="POST">
+                                        <form action="{{ route('client.notifications.markRead', $notification) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-sm btn-outline-secondary" title="Marquer comme lu">
                                                 <i class="fa fa-check"></i>
@@ -85,7 +85,7 @@
                                 </div>
                                 @endforeach
                             </div>
-                            
+
                             <div class="mt-3">
                                 {{ $notifications->links() }}
                             </div>

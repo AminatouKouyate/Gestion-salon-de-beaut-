@@ -17,6 +17,31 @@
                 @include('partials.sidebar.employee-menu')
             @endauth
 
+            {{-- Séparateur et switch de thème --}}
+            <li class="nav-label mt-4">Apparence</li>
+            <li>
+                <div class="theme-switch-wrapper">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="theme-label">
+                            <i class="icon-bulb"></i>
+                            <span id="theme-label-text">Mode Sombre</span>
+                        </span>
+                        <label class="theme-switch">
+                            <input type="checkbox" id="theme-toggle">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </li>
+
         </ul>
     </div>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Force l'affichage complet de la sidebar
+        document.body.setAttribute('data-sidebar-style', 'full');
+    });
+</script>
+

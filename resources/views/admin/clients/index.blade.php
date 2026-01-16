@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Liste des clients</h1>
     <a href="{{ route('admin.clients.create') }}" class="btn btn-primary">Ajouter un client</a>
@@ -28,7 +30,7 @@
                     <td>{{ $client->email }}</td>
                     <td>{{ $client->phone ?? 'N/A' }}</td>
                     <td class="text-end">
-                        @include('admin.clients.partials.actions', ['client' => $client])
+                         @include('partials.actions', ['client' => $client])
                     </td>
                 </tr>
                 @empty
@@ -44,5 +46,7 @@
             {{ $clients->links() }}
         </div>
     @endif
+</div>
+    </div>
 </div>
 @endsection

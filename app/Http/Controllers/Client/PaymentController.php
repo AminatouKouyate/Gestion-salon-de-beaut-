@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PaymentController extends Controller
 {
@@ -92,6 +93,18 @@ class PaymentController extends Controller
         return view('Clients.payments.show', compact('payment'));
     }
 
+    public function showInvoice(Payment $payment)
+    {
+        $client = Auth::guard('clients')->user();
+        if ($payment->appointment->client_id !== $client->id) {
+            abort(403);
+        }
+
+        $payment->load('appointment.service', 'appointment.client', 'appointment.employee');
+
+        return view('Clients.payments.invoice', compact('payment'));
+    }
+
     public function downloadInvoice(Payment $payment)
     {
         $client = Auth::guard('clients')->user();
@@ -99,9 +112,11 @@ class PaymentController extends Controller
             abort(403);
         }
 
-        $payment->load('appointment.service', 'appointment.client');
+        $payment->load('appointment.service', 'appointment.client', 'appointment.employee');
 
-        return view('Clients.payments.invoice', compact('payment'));
+        $pdf = Pdf::loadView('Clients.payments.invoice-pdf', compact('payment'));
+
+        return $pdf->download('facture-' . str_pad($payment->id, 6, '0', STR_PAD_LEFT) . '.pdf');
     }
 
     public function stripeWebhook(Request $request)

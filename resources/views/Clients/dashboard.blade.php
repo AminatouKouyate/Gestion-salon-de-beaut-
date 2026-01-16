@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -93,7 +93,34 @@
                     <div class="card-body text-center">
                         <i class="fa fa-gift fa-2x text-success mb-2"></i>
                         <h5 class="text-success">Réduction disponible !</h5>
-                        <p class="text-muted mb-0">Vous avez assez de points pour une réduction de 10%</p>
+                        <p class="text-muted mb-0">Vous avez assez de points pour une réduction de {{ $client->getLoyaltyDiscount() }}%</p>
+                    </div>
+                </div>
+                @endif
+
+                {{-- Notifications récentes --}}
+                @if($unreadNotifications->isNotEmpty())
+                <div class="card mt-3">
+                    <div class="card-header bg-warning">
+                        <h4 class="card-title text-white mb-0">
+                            <i class="fa fa-bell mr-2"></i>Notifications ({{ $unreadNotifications->count() }})
+                        </h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            @foreach($unreadNotifications as $notification)
+                            <li class="list-group-item">
+                                <small class="text-muted float-right">{{ $notification->created_at->diffForHumans() }}</small>
+                                <strong>{{ $notification->title }}</strong>
+                                <p class="mb-0 small">{{ Str::limit($notification->message, 60) }}</p>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ route('client.notifications.index') }}" class="btn btn-sm btn-outline-warning">
+                            Voir toutes les notifications
+                        </a>
                     </div>
                 </div>
                 @endif

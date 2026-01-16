@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ route('appointments.index') }}" class="btn btn-secondary">
+                <a href="{{ route('client.appointments.index') }}" class="btn btn-secondary">
                     <i class="fa fa-arrow-left mr-2"></i>Retour
                 </a>
             </div>
@@ -30,7 +30,7 @@
                                 </h5>
                                 <p class="mb-1"><strong>{{ $appointment->service->name ?? 'N/A' }}</strong></p>
                                 <p class="text-muted">{{ $appointment->service->description ?? '' }}</p>
-                                <p><strong>Prix:</strong> {{ $appointment->service->price ?? 0 }}€</p>
+                                <p><strong>Prix:</strong> {{ $appointment->service->price ?? 0 }} FCFA</p>
                                 <p><strong>Durée:</strong> {{ $appointment->service->duration ?? 0 }} min</p>
                             </div>
                             <div class="col-md-6">
@@ -98,13 +98,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-4">
-                                <p><strong>Montant:</strong> {{ $appointment->payment->amount }}€</p>
+                                <p><strong>Montant:</strong> {{ $appointment->payment->amount }} FCFA</p>
                             </div>
                             <div class="col-md-4">
                                 <p><strong>Méthode:</strong> {{ ucfirst($appointment->payment->method) }}</p>
                             </div>
                             <div class="col-md-4">
-                                <p><strong>Status:</strong> 
+                                <p><strong>Status:</strong>
                                     <span class="badge badge-{{ $appointment->payment->status == 'completed' ? 'success' : 'warning' }}">
                                         {{ ucfirst($appointment->payment->status) }}
                                     </span>
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         @if($appointment->payment->status == 'completed')
-                        <a href="{{ route('payments.invoice', $appointment->payment) }}" class="btn btn-outline-primary">
+                        <a href="{{ route('client.payments.invoice', $appointment->payment) }}" class="btn btn-outline-primary">
                             <i class="fa fa-download mr-2"></i>Télécharger la facture
                         </a>
                         @endif
@@ -128,10 +128,10 @@
                     </div>
                     <div class="card-body">
                         @if(!in_array($appointment->status, ['completed', 'cancelled']))
-                            <a href="{{ route('appointments.edit', $appointment) }}" class="btn btn-warning btn-block mb-2">
+                            <a href="{{ route('client.appointments.edit', $appointment) }}" class="btn btn-warning btn-block mb-2">
                                 <i class="fa fa-edit mr-2"></i>Modifier
                             </a>
-                            <form action="{{ route('appointments.destroy', $appointment) }}" method="POST" 
+                            <form action="{{ route('client.appointments.destroy', $appointment) }}" method="POST"
                                   onsubmit="return confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')">
                                 @csrf
                                 @method('DELETE')
@@ -142,7 +142,7 @@
                         @endif
 
                         @if($appointment->status == 'completed' && !$appointment->payment)
-                            <a href="{{ route('payments.create', ['appointment' => $appointment->id]) }}" class="btn btn-success btn-block">
+                            <a href="{{ route('client.payments.create', ['appointment' => $appointment->id]) }}" class="btn btn-success btn-block">
                                 <i class="fa fa-credit-card mr-2"></i>Effectuer le paiement
                             </a>
                         @endif

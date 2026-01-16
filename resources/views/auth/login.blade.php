@@ -40,25 +40,38 @@
                                 </div>
                             @endif
 
-                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('client.login.post') }}">
+                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('login') }}">
                                 @csrf
 
                                 <div class="form-group">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" required>
+                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required autofocus>
                                 </div>
 
                                 <div class="form-group">
                                     <input type="password" class="form-control" name="password" placeholder="Password" required>
                                 </div>
 
+                                <div class="form-row d-flex justify-content-between mt-4 mb-2">
+                                    <div class="form-group">
+                                        <div class="form-check ml-2">
+                                            <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="remember">Se souvenir de moi</label>
+                                        </div>
+                                        {{-- Le lien pour la réinitialisation du mot de passe admin sera ajouté ici --}}
+                                        {{-- <a href="#">Mot de passe oublié ?</a> --}}
+                                    </div>
+                                </div>
+
                                 <button class="btn login-form__btn submit w-100" type="submit">Se connecter</button>
                             </form>
 
-                            <p class="mt-5 login-form__footer">
-                                Vous n'avez pas de compte ?
-                                <a href="{{ route('client.register') }}" class="text-primary">S'inscrire</a>
-                            </p>
+                            <hr>
 
+                            <p class="text-center mt-3">
+                                <a href="{{ route('home') }}" class="text-muted">
+                                    <i class="fa fa-arrow-left"></i> Retour à l'accueil
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

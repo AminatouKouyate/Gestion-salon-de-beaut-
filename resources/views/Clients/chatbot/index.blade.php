@@ -1,24 +1,24 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-8">
-                <div class="card">
-                    <div class="card-header bg-primary">
+                <div class="card chat-card">
+                    <div class="card-header chat-header d-flex justify-content-between align-items-center">
                         <h4 class="card-title text-white mb-0">
-                            <i class="fa fa-comments mr-2"></i>Assistant Virtuel du Salon
+                            <i class="fa fa-robot mr-2"></i>Assistant IA
                         </h4>
+                        <a href="{{ route('client.chatbot.history') }}" class="btn btn-light btn-sm">
+                            <i class="fa fa-history mr-1"></i>Historique
+                        </a>
                     </div>
                     <div class="card-body p-0">
-                        <div id="chat-container" class="chat-container" style="height: 450px; overflow-y: auto; padding: 20px; background: #f8f9fa;">
+                        <div id="chat-container" class="chat-container" style="height: 500px; overflow-y: auto; padding: 20px;">
                             <div id="chat-messages">
                                 <div class="message bot-message">
                                     <div class="message-content">
-                                        <div class="avatar bg-primary text-white">
-                                            <i class="fa fa-robot"></i>
-                                        </div>
                                         <div class="bubble">
                                             Bonjour {{ $client->name ?? 'cher client' }} ! 👋<br>
                                             Bienvenue au salon. Comment puis-je vous aider ?
@@ -36,20 +36,20 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="chat-input-area p-3 border-top">
                             <form id="chat-form" class="d-flex">
                                 @csrf
-                                <input type="text" id="message-input" class="form-control mr-2" 
+                                <input type="text" id="message-input" class="form-control mr-2"
                                        placeholder="Écrivez votre message..." autocomplete="off">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-success rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
                                     <i class="fa fa-paper-plane"></i>
                                 </button>
                             </form>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card mt-3">
@@ -139,6 +139,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    display: none; /* Masquer l'avatar pour le style WhatsApp */
 }
 
 .user-message .avatar {
@@ -147,22 +148,26 @@
 
 .bubble {
     max-width: 70%;
-    padding: 12px 16px;
-    border-radius: 18px;
+    padding: 8px 12px;
+    border-radius: 7.5px;
     line-height: 1.5;
     white-space: pre-wrap;
+    position: relative;
+    font-size: 14.2px;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
 }
 
 .bot-message .bubble {
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 18px 18px 18px 4px;
+    background: #FFFFFF;
+    color: #111b21;
+    border-radius: 0 7.5px 7.5px 7.5px;
+    border: none;
 }
 
 .user-message .bubble {
-    background: #007bff;
-    color: white;
-    border-radius: 18px 18px 4px 18px;
+    background: #D9FDD3;
+    color: #111b21;
+    border-radius: 7.5px 0 7.5px 7.5px;
 }
 
 .suggestions {
@@ -217,30 +222,27 @@ document.addEventListener('DOMContentLoaded', function() {
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
         messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-        
+
         const icon = isUser ? 'fa-user' : 'fa-robot';
         const bgClass = isUser ? '' : 'bg-primary text-white';
-        
+
         messageDiv.innerHTML = `
             <div class="message-content">
-                <div class="avatar ${bgClass}">
-                    <i class="fa ${icon}"></i>
-                </div>
                 <div class="bubble">${text}</div>
             </div>
         `;
-        
+
         chatMessages.appendChild(messageDiv);
         scrollToBottom();
     }
 
     function addSuggestions(suggestions) {
         if (!suggestions || suggestions.length === 0) return;
-        
+
         const suggestionsDiv = document.createElement('div');
         suggestionsDiv.className = 'suggestions mt-2';
         suggestionsDiv.style.marginLeft = '50px';
-        
+
         suggestions.forEach(suggestion => {
             const btn = document.createElement('button');
             btn.className = 'btn btn-outline-primary btn-sm suggestion-btn';
@@ -248,18 +250,18 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.dataset.message = suggestion;
             suggestionsDiv.appendChild(btn);
         });
-        
+
         chatMessages.appendChild(suggestionsDiv);
         scrollToBottom();
     }
 
     function addActions(actions) {
         if (!actions || actions.length === 0) return;
-        
+
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'actions mt-2';
         actionsDiv.style.marginLeft = '50px';
-        
+
         actions.forEach(action => {
             const btn = document.createElement('a');
             btn.href = action.url;
@@ -267,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.textContent = action.label;
             actionsDiv.appendChild(btn);
         });
-        
+
         chatMessages.appendChild(actionsDiv);
         scrollToBottom();
     }
@@ -278,9 +280,6 @@ document.addEventListener('DOMContentLoaded', function() {
         typingDiv.className = 'message bot-message';
         typingDiv.innerHTML = `
             <div class="message-content">
-                <div class="avatar bg-primary text-white">
-                    <i class="fa fa-robot"></i>
-                </div>
                 <div class="bubble">
                     <div class="typing-indicator">
                         <span></span><span></span><span></span>
@@ -314,7 +313,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showTypingIndicator();
 
         try {
-            const response = await fetch('{{ route("chatbot.send") }}', {
+            const response = await fetch('{{ route("client.chatbot.send") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -324,10 +323,10 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             const data = await response.json();
-            
+
             removeTypingIndicator();
             addMessage(formatMessage(data.reply));
-            
+
             if (data.suggestions) {
                 addSuggestions(data.suggestions);
             }

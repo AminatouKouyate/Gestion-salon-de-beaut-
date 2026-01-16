@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ route('payments.index') }}" class="btn btn-secondary">
+                <a href="{{ route('client.payments.index') }}" class="btn btn-secondary">
                     <i class="fa fa-arrow-left mr-2"></i>Retour
                 </a>
             </div>
@@ -28,8 +28,8 @@
                                 <h5 class="text-primary mb-3">
                                     <i class="fa fa-credit-card mr-2"></i>Paiement
                                 </h5>
-                                <p><strong>Montant:</strong> <span class="h4 text-primary">{{ $payment->amount }}€</span></p>
-                                <p><strong>Méthode:</strong> 
+                                <p><strong>Montant:</strong> <span class="h4 text-primary">{{ $payment->amount }} FCFA</span></p>
+                                <p><strong>Méthode:</strong>
                                     @switch($payment->method)
                                         @case('stripe')
                                             <i class="fa fa-cc-stripe text-primary"></i> Carte bancaire
@@ -45,7 +45,7 @@
                                             @break
                                     @endswitch
                                 </p>
-                                <p><strong>Status:</strong> 
+                                <p><strong>Status:</strong>
                                     @switch($payment->status)
                                         @case('pending')
                                             <span class="badge badge-warning p-2">En attente</span>
@@ -99,12 +99,12 @@
                     </div>
                     <div class="card-body">
                         @if($payment->status == 'completed')
-                            <a href="{{ route('payments.invoice', $payment) }}" class="btn btn-primary btn-block">
+                            <a href="{{ route('client.payments.invoice', $payment) }}" class="btn btn-primary btn-block">
                                 <i class="fa fa-download mr-2"></i>Télécharger la facture
                             </a>
                         @endif
-                        
-                        <a href="{{ route('appointments.show', $payment->appointment) }}" class="btn btn-outline-secondary btn-block mt-2">
+
+                        <a href="{{ route('client.appointments.show', $payment->appointment) }}" class="btn btn-outline-secondary btn-block mt-2">
                             <i class="fa fa-eye mr-2"></i>Voir le rendez-vous
                         </a>
                     </div>

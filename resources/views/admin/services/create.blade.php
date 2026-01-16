@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Ajouter un service</h1>
     <a href="{{ route('admin.services.index') }}" class="btn btn-secondary">Retour à la liste</a>
@@ -22,8 +24,8 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label for="price" class="form-label">Prix (€)</label>
-                    <input type="number" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" required step="0.01" min="0">
+                    <label for="price" class="form-label">Prix (FCFA)</label>
+                    <input type="number" name="price" id="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" required step="1" min="0">
                     @error('price')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
                 <div class="col-md-6 mb-3">
@@ -39,6 +41,8 @@
             </div>
             <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
+    </div>
+</div>
     </div>
 </div>
 @endsection

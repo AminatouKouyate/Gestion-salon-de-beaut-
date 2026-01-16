@@ -24,7 +24,7 @@
                             <p class="text-muted">{{ $appointment->service->description }}</p>
                             <p><strong>Durée :</strong> {{ $appointment->service->duration }} minutes</p>
 
-                            <h6><strong>Prix :</strong> <span class="text-success font-weight-bold">{{ $appointment->total_price }}€</span></h6>
+                            <h6><strong>Prix :</strong> <span class="text-success font-weight-bold">{{ $appointment->total_price }} FCFA</span></h6>
                         </div>
                     </div>
 

@@ -22,6 +22,23 @@
 </li>
 
 <li>
+    <a href="{{ route('employee.leaves.index') }}">
+        <i class="icon-plane"></i>
+        <span>Mes congés</span>
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('employee.notifications.index') }}">
+        <i class="icon-bell"></i>
+        <span>Notifications</span>
+        @if(auth('employees')->check() && auth('employees')->user()->unreadNotificationsCount() > 0)
+            <span class="badge badge-danger">{{ auth('employees')->user()->unreadNotificationsCount() }}</span>
+        @endif
+    </a>
+</li>
+
+<li>
     <a href="#" onclick="event.preventDefault(); document.getElementById('employee-logout-form').submit();">
         <i class="icon-logout"></i>
         <span>Déconnexion</span>

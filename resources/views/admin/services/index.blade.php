@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Liste des services</h1>
     <a href="{{ route('admin.services.create') }}" class="btn btn-primary">Ajouter un service</a>
@@ -28,11 +30,11 @@
                     <td>{{ $service->id }}</td>
                     <td>{{ $service->name }}</td>
                     <td>{{ $service->category ?? 'N/A' }}</td>
-                    <td>{{ number_format($service->price, 2, ',', ' ') }} €</td>
+                    <td>{{ number_format($service->price, 0, ',', ' ') }} FCFA</td>
                     <td>{{ $service->duration }}</td>
                     <td><span class="badge bg-{{ $service->active ? 'success' : 'secondary' }}">{{ $service->active ? 'Oui' : 'Non' }}</span></td>
                     <td class="text-end">
-                        @include('admin.services.partials.actions', ['service' => $service])
+                        @include('partials.actions', ['service' => $service])
                     </td>
                 </tr>
                 @empty
@@ -48,5 +50,7 @@
             {{ $services->links() }}
         </div>
     @endif
+</div>
+    </div>
 </div>
 @endsection

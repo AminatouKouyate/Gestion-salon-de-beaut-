@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <h2>Ajouter un paiement</h2>
 
 <form action="{{ route('admin.payments.store') }}" method="POST">
@@ -28,8 +30,8 @@
     </div>
 
     <div class="mb-3">
-        <label>Montant (€)</label>
-        <input type="number" name="amount" step="0.01" class="form-control" value="{{ old('amount') }}" required>
+        <label>Montant (FCFA)</label>
+        <input type="number" name="amount" step="1" class="form-control" value="{{ old('amount') }}" required>
     </div>
 
     <div class="mb-3">
@@ -42,4 +44,7 @@
 
     <button type="submit" class="btn btn-success">Ajouter</button>
 </form>
+    </div>
+</div>
 @endsection
+

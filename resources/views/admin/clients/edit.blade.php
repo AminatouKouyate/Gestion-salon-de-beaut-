@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Modifier le client</h1>
     <a href="{{ route('admin.clients.index') }}" class="btn btn-secondary">Retour à la liste</a>
@@ -31,6 +33,8 @@
 
             <button type="submit" class="btn btn-primary">Mettre à jour</button>
         </form>
+    </div>
+</div>
     </div>
 </div>
 @endsection

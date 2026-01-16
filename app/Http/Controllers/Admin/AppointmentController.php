@@ -13,64 +13,67 @@ class AppointmentController extends Controller
 {
     public function index()
     {
-        $appointments = Appointment::with(['client', 'employee', 'service'])->latest()->paginate(10);
+        $appointments = Appointment::with(['client', 'service', 'employee'])->latest()->paginate(10);
         return view('admin.appointments.index', compact('appointments'));
     }
 
     public function create()
     {
-        $clients = Client::orderBy('name')->get(['id', 'name']);
-        $employees = Employee::orderBy('name')->get(['id', 'name']);
-        $services = Service::orderBy('name')->get(['id', 'name']);
-        return view('admin.appointments.create', compact('clients', 'employees', 'services'));
+        $clients = Client::all();
+        $services = Service::all();
+        $employees = Employee::all();
+        return view('admin.appointments.create', compact('clients', 'services', 'employees'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'employee_id' => 'required|exists:employees,id',
             'service_id' => 'required|exists:services,id',
-            'scheduled_at' => 'required|date',
-            'status' => 'required|in:pending,confirmed,completed,canceled'
+            'employee_id' => 'required|exists:employees,id',
+            'date' => 'required|date',
+            'time' => 'required',
+            'status' => 'required|string',
+            'notes' => 'nullable|string',
         ]);
 
-        Appointment::create($request->all());
+        Appointment::create($validated);
 
-        return redirect()->route('admin.appointments.index')->with('success', 'Rendez-vous ajouté avec succès.');
-    }
-
-    public function show(Appointment $appointment)
-    {
-        return view('admin.appointments.show', compact('appointment'));
+        return redirect()->route('admin.appointments.index')
+            ->with('success', 'Rendez-vous ajouté avec succès.');
     }
 
     public function edit(Appointment $appointment)
     {
-        $clients = Client::orderBy('name')->get(['id', 'name']);
-        $employees = Employee::orderBy('name')->get(['id', 'name']);
-        $services = Service::orderBy('name')->get(['id', 'name']);
-        return view('admin.appointments.edit', compact('appointment', 'clients', 'employees', 'services'));
+        $clients = Client::all();
+        $services = Service::all();
+        $employees = Employee::all();
+        return view('admin.appointments.edit', compact('appointment', 'clients', 'services', 'employees'));
     }
 
     public function update(Request $request, Appointment $appointment)
     {
-        $request->validate([
+        $validated = $request->validate([
             'client_id' => 'required|exists:clients,id',
-            'employee_id' => 'required|exists:employees,id',
             'service_id' => 'required|exists:services,id',
-            'scheduled_at' => 'required|date',
-            'status' => 'required|in:pending,confirmed,completed,canceled'
+            'employee_id' => 'required|exists:employees,id',
+            'date' => 'required|date',
+            'time' => 'required',
+            'status' => 'required|string',
+            'notes' => 'nullable|string',
         ]);
 
-        $appointment->update($request->all());
+        $appointment->update($validated);
 
-        return redirect()->route('admin.appointments.index')->with('success', 'Rendez-vous mis à jour.');
+        return redirect()->route('admin.appointments.index')
+            ->with('success', 'Rendez-vous mis à jour avec succès.');
     }
 
     public function destroy(Appointment $appointment)
     {
         $appointment->delete();
-        return redirect()->route('admin.appointments.index')->with('success', 'Rendez-vous supprimé.');
+
+        return redirect()->route('admin.appointments.index')
+            ->with('success', 'Rendez-vous supprimé avec succès.');
     }
 }

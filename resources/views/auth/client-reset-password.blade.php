@@ -1,65 +1,77 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Réinitialiser le mot de passe - Rosella</title>
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+</head>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Réinitialiser le mot de passe') }}</div>
+<body class="h-100">
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('client.password.update') }}">
-                        @csrf
+<div id="preloader">
+    <div class="loader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"/>
+        </svg>
+    </div>
+</div>
 
-                        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+<div class="login-form-bg h-100">
+    <div class="container h-100">
+        <div class="row justify-content-center h-100">
+            <div class="col-xl-6">
+                <div class="form-input-content">
+                    <div class="card login-form mb-0">
+                        <div class="card-body pt-5">
 
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('Adresse e-mail') }}</label>
+                            <a class="text-center" href="#">
+                                <h4>Réinitialiser le mot de passe</h4>
+                            </a>
 
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email', $request->email) }}" required autocomplete="email" autofocus>
+                            @if ($errors->any())
+                                <div class="alert alert-danger mt-3">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
 
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('client.password.update') }}">
+                                @csrf
+
+                                <input type="hidden" name="token" value="{{ $token }}">
+
+                                <div class="form-group">
+                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email', $email) }}" required autofocus>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="password" placeholder="Nouveau mot de passe" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
+                                </div>
+
+                                <button class="btn login-form__btn submit w-100" type="submit">Réinitialiser le mot de passe</button>
+                            </form>
+
+                            <p class="text-center">
+                                <a href="{{ route('client.login') }}">Retour à la connexion</a>
+                            </p>
                         </div>
-
-                        <div class="form-group row">
-                            <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Mot de passe') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirmer le mot de passe') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Réinitialiser le mot de passe') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-@endsection
+
+<script src="{{ asset('plugins/common/common.min.js') }}"></script>
+<script src="{{ asset('js/custom.min.js') }}"></script>
+
+</body>
+</html>

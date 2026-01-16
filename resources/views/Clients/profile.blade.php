@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -38,7 +38,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="name">Nom complet <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                        <input type="text" class="form-control @error('name') is-invalid @enderror"
                                                id="name" name="name" value="{{ old('name', $client->name) }}" required>
                                         @error('name')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -48,7 +48,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="email">Email <span class="text-danger">*</span></label>
-                                        <input type="email" class="form-control @error('email') is-invalid @enderror" 
+                                        <input type="email" class="form-control @error('email') is-invalid @enderror"
                                                id="email" name="email" value="{{ old('email', $client->email) }}" required>
                                         @error('email')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -61,7 +61,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="phone">Téléphone</label>
-                                        <input type="text" class="form-control @error('phone') is-invalid @enderror" 
+                                        <input type="text" class="form-control @error('phone') is-invalid @enderror"
                                                id="phone" name="phone" value="{{ old('phone', $client->phone) }}"
                                                placeholder="01 23 45 67 89">
                                         @error('phone')
@@ -72,7 +72,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="address">Adresse</label>
-                                        <input type="text" class="form-control @error('address') is-invalid @enderror" 
+                                        <input type="text" class="form-control @error('address') is-invalid @enderror"
                                                id="address" name="address" value="{{ old('address', $client->address) }}"
                                                placeholder="123 Rue Example, 75001 Paris">
                                         @error('address')
@@ -90,7 +90,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password">Nouveau mot de passe</label>
-                                        <input type="password" class="form-control @error('password') is-invalid @enderror" 
+                                        <input type="password" class="form-control @error('password') is-invalid @enderror"
                                                id="password" name="password" placeholder="••••••••">
                                         @error('password')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -100,7 +100,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="password_confirmation">Confirmer le mot de passe</label>
-                                        <input type="password" class="form-control" 
+                                        <input type="password" class="form-control"
                                                id="password_confirmation" name="password_confirmation" placeholder="••••••••">
                                     </div>
                                 </div>
@@ -126,16 +126,16 @@
                     <div class="card-body text-center">
                         <h1 class="text-primary mb-0">{{ $client->loyalty_points ?? 0 }}</h1>
                         <p class="text-muted">Points accumulés</p>
-                        
+
                         <div class="progress mb-3" style="height: 20px;">
                             @php $progress = min(($client->loyalty_points ?? 0), 100); @endphp
-                            <div class="progress-bar bg-primary" role="progressbar" 
-                                 style="width: {{ $progress }}%;" 
+                            <div class="progress-bar bg-primary" role="progressbar"
+                                 style="width: {{ $progress }}%;"
                                  aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100">
                                 {{ $progress }}%
                             </div>
                         </div>
-                        
+
                         @if(($client->loyalty_points ?? 0) >= 100)
                             <div class="alert alert-success mb-0">
                                 <i class="fa fa-gift mr-2"></i>Réduction de 10% disponible !
@@ -172,6 +172,67 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card border-danger">
+                    <div class="card-header bg-danger">
+                        <h4 class="card-title text-white mb-0">
+                            <i class="fa fa-exclamation-triangle mr-2"></i>Zone de danger
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="text-danger">Désactiver mon compte</h5>
+                        <p class="text-muted">
+                            Une fois votre compte désactivé, vous ne pourrez plus accéder à votre espace client.
+                            Contactez le salon pour réactiver votre compte.
+                        </p>
+                        <button type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#deactivateModal">
+                            <i class="fa fa-ban mr-2"></i>Désactiver mon compte
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deactivateModal" tabindex="-1" role="dialog" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-danger">
+                <h5 class="modal-title text-white" id="deactivateModalLabel">
+                    <i class="fa fa-exclamation-triangle mr-2"></i>Confirmer la désactivation
+                </h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Fermer">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form method="POST" action="{{ route('client.profile.deactivate') }}">
+                @csrf
+                <div class="modal-body">
+                    <div class="alert alert-warning">
+                        <i class="fa fa-warning mr-2"></i>
+                        <strong>Attention !</strong> Cette action désactivera votre compte. Vous ne pourrez plus vous connecter.
+                    </div>
+                    <p>Pour confirmer, veuillez entrer votre mot de passe :</p>
+                    <div class="form-group">
+                        <label for="deactivate_password">Mot de passe actuel</label>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror"
+                               id="deactivate_password" name="password" required>
+                        @error('password')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fa fa-ban mr-2"></i>Désactiver mon compte
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

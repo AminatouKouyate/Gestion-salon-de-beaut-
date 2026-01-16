@@ -1,53 +1,88 @@
-@extends('admin.layouts.master')
+@extends('layouts.master')
 
 @section('content')
-<h2 class="mb-4">Ajouter un paiement</h2>
+<div class="content-body">
+    <div class="container-fluid">
 
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
+        <div class="row page-titles mx-0">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Gestion des Paiements</h4>
+                    <p class="mb-0">Liste de toutes les transactions</p>
+                </div>
+            </div>
+            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">Admin</a></li>
+                    <li class="breadcrumb-item active">Paiements</li>
+                </ol>
+            </div>
+        </div>
+
+        {{-- Affichage des erreurs --}}
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        @include('partials.success')
+
+       
+
+        {{-- Liste des paiements --}}
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Liste des paiements</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Client</th>
+                                        <th>Rendez-vous</th>
+                                        <th>Montant</th>
+                                        <th>Statut</th>
+                                        <th>Date</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @forelse($payments as $payment)
+                                    <tr>
+                                        <td>{{ $payment->id }}</td>
+                                        <td>{{ $payment->client->name ?? 'N/A' }}</td>
+                                        <td>#{{ $payment->appointment_id }}</td>
+                                        <td>{{ number_format($payment->amount, 0, ',', ' ') }} FCFA</td>
+                                        <td>
+                                            <span class="badge badge-pill badge-primary">{{ ucfirst($payment->status) }}</span>
+                                        </td>
+                                        <td>{{ $payment->created_at->format('d/m/Y') }}</td>
+                                        <td class="text-end">
+                                            {{-- Ici tu peux ajouter les boutons edit/delete --}}
+                                        </td>
+                                    </tr>
+                                    @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Aucun paiement trouvé.</td>
+                                    </tr>
+                                    @endforelse
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-@endif
-
-<form action="{{ route('admin.payments.store') }}" method="POST">
-    @csrf
-    <div class="mb-3">
-        <label for="client_id" class="form-label">Client</label>
-        <select name="client_id" id="client_id" class="form-control" required>
-            <option value="">-- Sélectionner un client --</option>
-            @foreach($clients as $client)
-
-    <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
-            <option value="">-- Sélectionner un rendez-vous --</option>
-            @foreach($appointments as $appointment)
-                <option value="{{ $appointment->id }}" {{ old('appointment_id') == $appointment->id ? 'selected' : '' }}>
-                    {{ $appointment->client->name ?? 'N/A' }} - {{ $appointment->service->name ?? 'N/A' }} ({{ $appointment->scheduled_at->format('d/m/Y H:i') }})
-        <label for="duration" class="form-label">Durée (minutes)</label>
-    <div class="mb-3">
-        <label for="role" class="form-label">Rôle</label>
-        <select name="role" id="role" class="form-control" required>
-            <option value="employee" {{ old('role') == 'employee' ? 'selected' : '' }}>Employé</option>
-            <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>Manager</option>
-            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Administrateur</option>
-        <label for="status" class="form-label">Statut</label>
-        <select name="status" id="status" class="form-control" required>
-            <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>En attente</option>
-            <option value="paid" {{ old('status') == 'paid' ? 'selected' : '' }}>Payé</option>
-        </select>
-    <div class="mb-3 form-check">
-        <input type="checkbox" name="active" id="active" class="form-check-input" value="1" {{ old('active', true) ? 'checked' : '' }}>
-        <label class="form-check-label" for="active">Actif</label>
-    </div>
-
-    <button type="submit" class="btn btn-success">Ajouter</button>
-    <a href="{{ route('admin.employees.index') }}" class="btn btn-secondary">Annuler</a>
-    <a href="{{ route('admin.services.index') }}" class="btn btn-secondary">Annuler</a>
-    <a href="{{ route('admin.payments.index') }}" class="btn btn-secondary">Annuler</a>
-</form>
+</div>
 @endsection

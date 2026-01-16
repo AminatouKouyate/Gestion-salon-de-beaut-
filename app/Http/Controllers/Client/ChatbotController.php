@@ -58,6 +58,24 @@ class ChatbotController extends Controller
         return view('Clients.chatbot.index', compact('client', 'chatHistory'));
     }
 
+    public function history()
+    {
+        $client = Auth::guard('clients')->user();
+
+        $messages = ChatMessage::forClient($client->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(50);
+
+        // Group by date
+        $conversations = $messages->getCollection()->groupBy(function ($message) {
+            return $message->created_at->format('Y-m-d');
+        });
+
+        return view('Clients.chatbot.history', [
+            'conversations' => $messages->setCollection($conversations->flatten(1)),
+        ]);
+    }
+
     public function sendMessage(Request $request)
     {
         $request->validate(['message' => 'required|string|max:500']);
@@ -172,9 +190,9 @@ class ChatbotController extends Controller
             $catName = $category ?: 'Général';
             $text .= "**$catName**\n";
             foreach ($categoryServices as $service) {
-                $priceDisplay = $service->price . '€';
+                $priceDisplay = $service->price . ' FCFA';
                 if ($service->hasActivePromotion()) {
-                    $priceDisplay = "~~{$service->price}€~~ **{$service->promotion_price}€** 🔥";
+                    $priceDisplay = "~~{$service->price} FCFA~~ **{$service->promotion_price} FCFA** 🔥";
                 }
                 $text .= "• {$service->name} - $priceDisplay ({$service->duration} min)\n";
             }
@@ -210,7 +228,7 @@ class ChatbotController extends Controller
 
             $text .= "**{$service->name}**\n";
             $text .= "• {$label} : **-{$discount}%**$endDate\n";
-            $text .= "• ~~{$service->price}€~~ → **{$service->promotion_price}€**\n\n";
+            $text .= "• ~~{$service->price} FCFA~~ → **{$service->promotion_price} FCFA**\n\n";
         }
 
         $text .= "Profitez-en vite ! 🏃‍♂️";
@@ -240,7 +258,7 @@ class ChatbotController extends Controller
             'text' => "📅 Je peux vous aider à réserver un rendez-vous !\n\n" .
                 "**Employés disponibles** : " . $employees->pluck('name')->join(', ') . "\n\n" .
                 "**Services populaires** :\n" .
-                $services->map(fn($s) => "• {$s->name} ({$s->getCurrentPrice()}€)")->join("\n") .
+                $services->map(fn($s) => "• {$s->name} ({$s->getCurrentPrice()} FCFA)")->join("\n") .
                 $promoText . "\n\n" .
                 "👉 [Cliquez ici pour réserver](/appointments/create)",
             'suggestions' => ['Voir tous les services', 'Promotions', 'Mes rendez-vous'],
@@ -440,10 +458,10 @@ class ChatbotController extends Controller
             $amount = $apt->payment ? $apt->payment->amount : $apt->service->price;
             $totalSpent += $amount;
             $text .= "$paid **{$apt->service->name}**\n";
-            $text .= "   📅 {$apt->date->format('d/m/Y')} - {$amount}€\n\n";
+            $text .= "   📅 {$apt->date->format('d/m/Y')} - {$amount} FCFA\n\n";
         }
 
-        $text .= "💰 Total dépensé : **{$totalSpent}€**\n\n";
+        $text .= "💰 Total dépensé : **{$totalSpent} FCFA**\n\n";
         $text .= "👉 [Voir l'historique complet](/appointments-history)";
 
         return [
@@ -479,7 +497,7 @@ class ChatbotController extends Controller
         $text = "🧾 **Vos dernières factures** :\n\n";
 
         foreach ($payments as $payment) {
-            $text .= "• **{$payment->appointment->service->name}** - {$payment->amount}€\n";
+            $text .= "• **{$payment->appointment->service->name}** - {$payment->amount} FCFA\n";
             $text .= "   📅 {$payment->created_at->format('d/m/Y')}\n";
             $text .= "   👉 [Télécharger](/payments/{$payment->id}/invoice)\n\n";
         }

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -11,14 +11,32 @@
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <ol class="breadcrumb">
+
                     <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
                     <li class="breadcrumb-item active">Rendez-vous</li>
                 </ol>
             </div>
-        </div>
-
         @if(session('success'))
+
+        <!-- Filtres de vue -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="btn-group" role="group" aria-label="Filtres de vue">
+                    <a href="{{ route('employee.appointments.index', ['view' => 'upcoming']) }}"
+                       class="btn {{ $view == 'upcoming' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        À venir
+                    </a>
+                    <a href="{{ route('employee.appointments.index', ['view' => 'daily']) }}"
+                       class="btn {{ $view == 'daily' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        Aujourd'hui
+                    </a>
+                    <a href="{{ route('employee.appointments.index', ['view' => 'weekly']) }}"
+                       class="btn {{ $view == 'weekly' ? 'btn-primary' : 'btn-outline-primary' }}">
+                        Cette semaine
+                    </a>
+                </div>
+            </div>
+        </div>
             <div class="alert alert-success alert-dismissible fade show">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -31,7 +49,15 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Liste des Rendez-vous à Venir</h4>
+                        <h4 class="card-title">
+                            @if($view == 'daily')
+                                Rendez-vous d'Aujourd'hui
+                            @elseif($view == 'weekly')
+                                Rendez-vous de la Semaine
+                            @else
+                                Liste des Rendez-vous à Venir
+                            @endif
+                        </h4>
                     </div>
                     <div class="card-body">
                         @if($appointments->isEmpty())

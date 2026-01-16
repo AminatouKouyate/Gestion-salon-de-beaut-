@@ -86,4 +86,9 @@ class Service extends Model
                     ->orWhere('promotion_end', '>=', Carbon::today());
             });
     }
+
+    public function employees()
+    {
+        return $this->belongsToMany(Employee::class);
+    }
 }

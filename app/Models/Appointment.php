@@ -18,11 +18,15 @@ class Appointment extends Model
         'time',
         'status',
         'notes',
+        'reminder_sent',
+        'reminder_sent_at',
     ];
 
     protected $casts = [
         'date'   => 'date',
         'status' => AppointmentStatus::class,
+        'reminder_sent' => 'boolean',
+        'reminder_sent_at' => 'datetime',
     ];
 
     public function client()

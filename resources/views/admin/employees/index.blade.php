@@ -1,6 +1,8 @@
-@extends('admin.layouts.app')
+@extends('layouts.master')
 
 @section('content')
+<div class="content-body">
+    <div class="container-fluid">
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1>Liste des employés</h1>
     <a href="{{ route('admin.employees.create') }}" class="btn btn-primary">Ajouter un employé</a>
@@ -28,7 +30,7 @@
                     <td>{{ $employee->email }}</td>
                     <td><span class="badge bg-info">{{ ucfirst($employee->role) }}</span></td>
                     <td class="text-end">
-                        @include('admin.employees.partials.actions', ['employee' => $employee])
+                        @include('partials.actions', ['employee' => $employee])
                     </td>
                 </tr>
                 @empty
@@ -44,5 +46,7 @@
             {{ $employees->links() }}
         </div>
     @endif
+</div>
+    </div>
 </div>
 @endsection

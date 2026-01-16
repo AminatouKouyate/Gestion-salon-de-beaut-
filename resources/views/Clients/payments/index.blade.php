@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -48,7 +48,7 @@
                                         <tr>
                                             <td>{{ $payment->created_at->format('d/m/Y') }}</td>
                                             <td>{{ $payment->appointment->service->name ?? 'N/A' }}</td>
-                                            <td><strong>{{ $payment->amount }}€</strong></td>
+                                            <td><strong>{{ $payment->amount }} FCFA</strong></td>
                                             <td>
                                                 @switch($payment->method)
                                                     @case('stripe')
@@ -82,12 +82,15 @@
                                                 @endswitch
                                             </td>
                                             <td>
-                                                <a href="{{ route('payments.show', $payment) }}" class="btn btn-sm btn-info">
+                                                <a href="{{ route('client.payments.show', $payment) }}" class="btn btn-sm btn-info" title="Voir détails">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                                 @if($payment->status == 'completed')
-                                                    <a href="{{ route('payments.invoice', $payment) }}" class="btn btn-sm btn-secondary">
-                                                        <i class="fa fa-download"></i> Facture
+                                                    <a href="{{ route('client.payments.invoice', $payment) }}" class="btn btn-sm btn-secondary" title="Voir facture">
+                                                        <i class="fa fa-file-text"></i>
+                                                    </a>
+                                                    <a href="{{ route('client.payments.invoice.download', $payment) }}" class="btn btn-sm btn-primary" title="Télécharger PDF">
+                                                        <i class="fa fa-download"></i>
                                                     </a>
                                                 @endif
                                             </td>

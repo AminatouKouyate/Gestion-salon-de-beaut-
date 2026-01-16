@@ -12,19 +12,28 @@ class EmployeeAppointmentController extends Controller
     /**
      * Affiche la liste des rendez-vous pour l'employé connecté.
      */
-    public function index()
+    public function index(Request $request)
     {
         $employee = Auth::guard('employees')->user();
+        $view = $request->get('view', 'upcoming'); // upcoming, daily, weekly
 
-        // Récupérer les rendez-vous à venir
-        $appointments = $employee->appointments()
-            ->with(['client', 'service'])
-            ->where('date', '>=', now()->toDateString())
-            ->orderBy('date')
+        $query = $employee->appointments()
+            ->with(['client', 'service']);
+
+        if ($view === 'daily') {
+            $query->whereDate('date', now()->toDateString());
+        } elseif ($view === 'weekly') {
+            $query->whereBetween('date', [now()->startOfWeek()->toDateString(), now()->endOfWeek()->toDateString()]);
+        } else {
+            // upcoming
+            $query->where('date', '>=', now()->toDateString());
+        }
+
+        $appointments = $query->orderBy('date')
             ->orderBy('time')
             ->paginate(15);
 
-        return view('employee.appointments.index', compact('appointments', 'employee'));
+        return view('employee.appointments.index', compact('appointments', 'employee', 'view'));
     }
 
     /**

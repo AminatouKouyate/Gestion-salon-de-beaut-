@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 use App\Models\User;
+use App\Models\Client;
+use App\Models\Employee;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -19,28 +21,28 @@ class UserSeeder extends Seeder
             ['email' => 'admin@salon.com'],
             [
                 'name' => 'Admin Salon',
-                'password' => Hash::make('password'), // Mot de passe : password
+                'password' => Hash::make('admin123'), // Mot de passe : admin123
                 'role' => User::ROLE_ADMIN,
             ]
         );
 
-        // Créer un employé
-        User::firstOrCreate(
-            ['email' => 'employee@salon.com'],
+        // Créer un employé dans la table 'employees'
+        Employee::firstOrCreate(
+            ['email' => 'employe@salon.com'],
             [
                 'name' => 'Employe Salon',
-                'password' => Hash::make('password'), // Mot de passe : password
-                'role' => User::ROLE_EMPLOYEE,
+                'password' => Hash::make('employe123'), // Mot de passe : employe123
+                'role' => 'employee',
             ]
         );
 
-        // Créer un client
-        User::firstOrCreate(
+        // Créer un client dans la table 'clients'
+        Client::firstOrCreate(
             ['email' => 'client@salon.com'],
             [
                 'name' => 'Client Salon',
-                'password' => Hash::make('password'), // Mot de passe : password
-                'role' => User::ROLE_CLIENT,
+                'password' => Hash::make('client123'), // Mot de passe : client123
+                'phone' => '0102030405',
             ]
         );
     }

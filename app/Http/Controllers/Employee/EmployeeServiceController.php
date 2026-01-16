@@ -9,17 +9,21 @@ use Illuminate\Http\Request;
 class EmployeeServiceController extends Controller
 {
     /**
-     * Affiche la liste des services pour l'employé.
+     * Affiche la liste des services à réaliser aujourd'hui pour l'employé.
      *
      * @return \Illuminate\View\View
      */
     public function index()
     {
-        $services = Service::where('is_active', true)
-            ->orderBy('name')
+        $employee = auth('employees')->user();
+
+        $todayAppointments = $employee->appointments()
+            ->with(['client', 'service'])
+            ->whereDate('date', now()->toDateString())
+            ->orderBy('time')
             ->get();
 
-        return view('employee.services.index', compact('services'));
+        return view('employee.services.index', compact('todayAppointments', 'employee'));
     }
 
     /**

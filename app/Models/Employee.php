@@ -101,4 +101,9 @@ class Employee extends Authenticatable
             ->whereDate('date', now()->toDateString())
             ->orderBy('time');
     }
+
+    public function services()
+    {
+        return $this->belongsToMany(Service::class);
+    }
 }

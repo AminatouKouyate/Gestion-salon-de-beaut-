@@ -5,21 +5,19 @@ namespace App\Http\Controllers\Employee;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class EmployeeLoginController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * Where to redirect employees after login.
      *
-     * @return void
+     * @var string
      */
-    public function __construct()
-    {
-        $this->middleware('guest:employees')->except('logout');
-    }
+    protected $redirectTo = '/employee/dashboard';
 
     /**
-     * Show the employee login form.
+     * Show the application's login form.
      *
      * @return \Illuminate\View\View
      */
@@ -29,23 +27,38 @@ class EmployeeLoginController extends Controller
     }
 
     /**
-     * Handle a login request to the application.
+     * Get the guard to be used during authentication.
+     *
+     * @return \Illuminate\Contracts\Auth\StatefulGuard
+     */
+    protected function guard()
+    {
+        return Auth::guard('employees');
+    }
+
+    /**
+     * Handle an authentication attempt.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function login(Request $request)
     {
-        $this->validate($request, [
-            'email'   => 'required|email',
-            'password' => 'required|min:6'
+        $request->validate([
+            'email' => ['required', 'string', 'email'],
+            'password' => ['required', 'string'],
         ]);
 
-        if (Auth::guard('employees')->attempt(['email' => $request->email, 'password' => $request->password], $request->get('remember'))) {
-            return redirect()->intended(route('employee.dashboard'));
+        if (! $this->guard()->attempt($request->only('email', 'password'), $request->boolean('remember'))) {
+            throw ValidationException::withMessages([
+                'email' => __('auth.failed'),
+            ]);
         }
 
-        return back()->withInput($request->only('email', 'remember'))->withErrors(['email' => 'Ces identifiants ne correspondent pas à nos enregistrements.']);
+        $request->session()->regenerate();
+
+        return redirect()->intended($this->redirectTo);
     }
 
     /**
@@ -56,7 +69,9 @@ class EmployeeLoginController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::guard('employees')->logout();
-        return redirect('/employee/login');
+        $this->guard()->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

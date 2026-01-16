@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Stock;
+
+
+use App\Models\Employee;
 use Illuminate\Http\Request;
 
 class StockController extends Controller
@@ -13,8 +16,16 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::latest()->paginate(10);
-        return view('admin.stocks.index', compact('stocks'));
+        // Tous les produits
+        $stocks = Stock::orderBy('name')->get();
+
+        // Produits à stock faible ou critique
+        $lowStocks = Stock::whereColumn('quantity', '<=', 'alert_threshold')->get();
+
+        return view('admin.stocks.index', compact(
+            'stocks',
+            'lowStocks'
+        ));
     }
 
     /**
@@ -31,9 +42,10 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'product_name' => 'required|string|max:255|unique:stocks,product_name',
+            'name' => 'required|string|max:255|unique:stocks,name',
+            'category' => 'nullable|string|max:255',
             'quantity' => 'required|integer|min:0',
-            'alert_quantity' => 'required|integer|min:0',
+            'alert_threshold' => 'required|integer|min:0',
         ]);
 
         Stock::create($request->all());

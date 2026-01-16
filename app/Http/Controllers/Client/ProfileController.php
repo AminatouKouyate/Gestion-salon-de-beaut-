@@ -11,23 +11,26 @@ use Illuminate\Support\Facades\Hash;
 class ProfileController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // Ensure all methods in this controller require a client to be authenticated.
-        $this->middleware('auth:clients');
-    }
-
-    /**
      * Display the client's dashboard.
      */
     public function dashboard()
     {
         $client = Auth::guard('clients')->user();
-        return view('Clients.dashboard', compact('client'));
+        
+        $upcomingAppointments = $client->getUpcomingAppointments();
+        $unreadNotifications = $client->unreadNotifications()->take(5)->get();
+        $recentPayments = $client->payments()
+            ->with('appointment.service')
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('Clients.dashboard', compact(
+            'client',
+            'upcomingAppointments',
+            'unreadNotifications',
+            'recentPayments'
+        ));
     }
 
     /**
@@ -56,5 +59,25 @@ class ProfileController extends Controller
         $client->update($data);
 
         return back()->with('success', 'Profil mis à jour');
+    }
+
+    /**
+     * Deactivate the client's account.
+     */
+    public function deactivate(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|current_password:clients',
+        ]);
+
+        $client = Auth::guard('clients')->user();
+        $client->update(['active' => false]);
+
+        Auth::guard('clients')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('client.login')
+            ->with('success', 'Votre compte a été désactivé avec succès.');
     }
 }

@@ -1,4 +1,4 @@
-@extends('master')
+@extends('layouts.master')
 
 @section('content')
 <div class="content-body">
@@ -10,7 +10,7 @@
                 </div>
             </div>
             <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ route('payments.index') }}" class="btn btn-secondary">
+                <a href="{{ route('client.payments.index') }}" class="btn btn-secondary">
                     <i class="fa fa-arrow-left mr-2"></i>Retour
                 </a>
             </div>
@@ -34,26 +34,26 @@
                             <div class="text-center py-5">
                                 <i class="fa fa-check-circle fa-3x text-success mb-3"></i>
                                 <p class="text-muted">Tous vos rendez-vous sont payés !</p>
-                                <a href="{{ route('appointments.index') }}" class="btn btn-primary">
+                                <a href="{{ route('client.appointments.index') }}" class="btn btn-primary">
                                     Voir mes rendez-vous
                                 </a>
                             </div>
                         @else
-                            <form action="{{ route('payments.store') }}" method="POST">
+                            <form action="{{ route('client.payments.store') }}" method="POST">
                                 @csrf
-                                
+
                                 <div class="form-group">
                                     <label for="appointment_id">Rendez-vous</label>
                                     <select name="appointment_id" id="appointment_id" class="form-control" required>
                                         @if($appointment)
                                             <option value="{{ $appointment->id }}" selected>
-                                                {{ $appointment->service->name }} - {{ $appointment->date->format('d/m/Y') }} - {{ $appointment->service->price }}€
+                                                {{ $appointment->service->name }} - {{ $appointment->date->format('d/m/Y') }} - {{ $appointment->service->price }} FCFA
                                             </option>
                                         @else
                                             <option value="">Sélectionner un rendez-vous</option>
                                             @foreach($unpaidAppointments as $apt)
                                                 <option value="{{ $apt->id }}" data-price="{{ $apt->service->price }}">
-                                                    {{ $apt->service->name }} - {{ $apt->date->format('d/m/Y') }} - {{ $apt->service->price }}€
+                                                    {{ $apt->service->name }} - {{ $apt->date->format('d/m/Y') }} - {{ $apt->service->price }} FCFA
                                                 </option>
                                             @endforeach
                                         @endif
@@ -167,7 +167,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const paymentOptions = document.querySelectorAll('.payment-option');
-    
+
     paymentOptions.forEach(option => {
         option.addEventListener('click', function() {
             paymentOptions.forEach(o => o.classList.remove('selected'));
