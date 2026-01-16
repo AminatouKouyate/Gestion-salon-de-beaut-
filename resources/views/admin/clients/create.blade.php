@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @extends('layouts.master')
+=======
+@extends('admin.layouts.master')
+>>>>>>> 081d553c768bc74407e818ea7ccc2aff5c09f014
 
 @section('content')
 <div class="content-body">
