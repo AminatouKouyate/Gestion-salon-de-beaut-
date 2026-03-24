@@ -53,9 +53,14 @@ class AppServiceProvider extends ServiceProvider
         // Partager les paramètres de thème global avec toutes les vues
         View::composer('*', function ($view) {
             try {
-                $settings = Setting::instance();
-                $view->with('globalColorTheme', $settings->color_theme ?? 'rose-gold');
-                $view->with('globalDarkMode', $settings->dark_mode ?? false);
+                if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                    $settings = Setting::instance();
+                    $view->with('globalColorTheme', $settings->color_theme ?? 'rose-gold');
+                    $view->with('globalDarkMode', $settings->dark_mode ?? false);
+                } else {
+                    $view->with('globalColorTheme', 'rose-gold');
+                    $view->with('globalDarkMode', false);
+                }
             } catch (\Exception $e) {
                 $view->with('globalColorTheme', 'rose-gold');
                 $view->with('globalDarkMode', false);
