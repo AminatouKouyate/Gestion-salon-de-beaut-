@@ -1,4 +1,4 @@
-@extends('layouts.master')
+@extends('layouts.admin-master')
 
 @section('content')
 <div class="content-body">
@@ -23,7 +23,7 @@
             <option value="">-- SÃ©lectionner un rendez-vous --</option>
             @foreach($appointments as $appointment)
                 <option value="{{ $appointment->id }}" {{ old('appointment_id') == $appointment->id ? 'selected' : '' }}>
-                    {{ $appointment->client->name ?? 'N/A' }} - {{ $appointment->service->name ?? 'N/A' }} ({{ $appointment->scheduled_at->format('d/m/Y H:i') }})
+                    {{ $appointment->client->name ?? '—' }} - {{ $appointment->service->name ?? '—' }} ({{ $appointment->scheduled_at->format('d/m/Y H:i') }})
                 </option>
             @endforeach
         </select>

@@ -1,0 +1,33 @@
+sequenceDiagram
+    actor E as Employe
+    participant FE as Interface Employe
+    participant S as Serveur Laravel
+    participant BD as Base de Donnees
+    actor A as Admin
+    E->>FE: Remplir formulaire de conge
+    FE->>S: POST /employee/leave-requests
+    S->>BD: INSERT leave_request (status=pending)
+    BD-->>S: Demande creee
+    S-->>FE: Confirmation envoi
+    FE-->>E: Demande soumise
+    A->>S: GET /admin/leave-requests
+    S->>BD: SELECT leave_requests (status=pending)
+    BD-->>S: Liste des demandes
+    S-->>A: Afficher demandes en attente
+    alt Approuver
+        A->>S: PUT /admin/leave-requests/approve
+        S->>BD: UPDATE leave_request (status=approved)
+        S->>BD: INSERT notification employe
+        S-->>A: Demande approuvee
+    else Rejeter
+        A->>S: PUT /admin/leave-requests/reject
+        S->>BD: UPDATE leave_request (status=rejected)
+        S->>BD: INSERT notification employe
+        S-->>A: Demande rejetee
+    end
+    E->>FE: Consulter notifications
+    FE->>S: GET /employee/notifications
+    S->>BD: SELECT notifications non lues
+    BD-->>S: Notification conge
+    S-->>FE: Afficher resultat
+    FE-->>E: Decision affichee

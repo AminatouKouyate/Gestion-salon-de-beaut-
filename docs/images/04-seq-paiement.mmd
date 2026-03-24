@@ -1,0 +1,38 @@
+sequenceDiagram
+    actor C as Client
+    participant P as Page Paiement
+    participant S as Serveur Laravel
+    participant GW as Passerelle Paiement
+    participant BD as Base de Donnees
+    C->>P: Choisir methode de paiement
+    alt Stripe Carte Bancaire
+        P->>S: POST /client/payments/stripe
+        S->>GW: Creer session Stripe Checkout
+        GW-->>S: URL de paiement
+        S-->>P: Redirection vers Stripe
+        C->>GW: Saisir informations carte
+        GW->>S: POST /stripe/webhook
+        S->>BD: UPDATE payment (status=paid)
+    else Orange Money
+        P->>S: POST /client/payments/orange-money
+        S->>GW: Initier paiement Orange Money
+        GW-->>S: URL de paiement
+        S-->>P: Redirection vers Orange Money
+        C->>GW: Confirmer avec code OTP
+        GW->>S: POST /orange-money/callback
+        S->>BD: UPDATE payment (status=paid)
+    else Wave
+        P->>S: POST /client/payments/wave
+        S->>GW: Initier paiement Wave
+        GW-->>S: URL de paiement
+        S-->>P: Redirection vers Wave
+        C->>GW: Confirmer paiement
+        GW->>S: POST /wave/callback
+        S->>BD: UPDATE payment (status=paid)
+    else Especes au salon
+        P->>S: POST /client/payments/cash
+        S->>BD: INSERT payment (status=pending)
+    end
+    S->>BD: INSERT notification client
+    S-->>P: Confirmation paiement
+    P-->>C: Afficher recu

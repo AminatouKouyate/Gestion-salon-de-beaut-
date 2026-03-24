@@ -7,17 +7,45 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Notification de modification de rendez-vous.
+ *
+ * Envoyée au client lorsqu'un rendez-vous existant est modifié
+ * (changement de date, d'heure ou de service). Contient les
+ * nouvelles informations du rendez-vous.
+ * Diffusée par email et enregistrée en base de données.
+ */
 class AppointmentUpdatedNotification extends Notification
 {
     use Queueable;
 
+    /**
+     * Crée une nouvelle instance de la notification.
+     *
+     * @param  \App\Models\Appointment  $appointment  Le rendez-vous modifié
+     */
     public function __construct(public Appointment $appointment) {}
 
+    /**
+     * Détermine les canaux de diffusion de la notification.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string>  Les canaux utilisés : email et base de données
+     */
     public function via($notifiable): array
     {
         return ['mail', 'database'];
     }
 
+    /**
+     * Construit la représentation email de la notification.
+     *
+     * Informe le client des nouvelles date et heure du rendez-vous
+     * modifié, avec un lien pour consulter ses rendez-vous.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
@@ -31,6 +59,12 @@ class AppointmentUpdatedNotification extends Notification
             ->line('Merci de votre confiance !');
     }
 
+    /**
+     * Construit la représentation en tableau pour le stockage en base de données.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string, mixed>  Les données de la modification à stocker
+     */
     public function toArray($notifiable): array
     {
         return [

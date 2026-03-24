@@ -1,3 +1,7 @@
+{{--
+    Vue : Détails d'un client (admin)
+    Description : Affiche les informations détaillées d'un client pour l'administrateur.
+--}}
 @extends('layouts.master')
 
 @section('content')
@@ -13,7 +17,7 @@
                     <div class="card-body">
                         <p><strong>Nom :</strong> {{ $client->name }}</p>
                         <p><strong>Email :</strong> {{ $client->email }}</p>
-                        <p><strong>Téléphone :</strong> {{ $client->phone ?? 'N/A' }}</p>
+                        <p><strong>Téléphone :</strong> {{ $client->phone ?? '�' }}</p>
                     </div>
                 </div>
             </div>

@@ -1,23 +1,80 @@
-@extends('layouts.master')
+{{--
+    Vue : Détails d'un service
+    Description : Page de détail d'un service avec galerie de photos (navigation par flèches et swipe), description, prix, durée, promotions actives, employés disponibles et bouton de réservation.
+--}}
+@extends('layouts.client-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>{{ $service->name }}</h4>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-scissors"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">{{ $service->name }}</h2>
+                    <p class="beauty-page-subtitle">Détails du service</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ url()->previous() }}" class="btn btn-secondary">
-                    <i class="fa fa-arrow-left mr-2"></i>Retour
-                </a>
-            </div>
+            <a href="{{ route('client.services') }}" class="btn btn-secondary"><i class="fa fa-arrow-left mr-2"></i>Retour</a>
         </div>
 
         <div class="row">
             <div class="col-lg-8">
+                {{-- Galerie photos du service --}}
+                @if($service->photos && count($service->photos) > 0)
+                <div class="card mb-3">
+                    <div class="card-body p-0">
+                        <div class="show-gallery-container position-relative" style="background: #000; border-radius: 8px; overflow: hidden;">
+                            <div class="show-gallery-track" id="showGalleryTrack"
+                                 style="display: flex; transition: transform 0.3s ease; height: 400px;">
+                                @foreach($service->photos as $i => $photo)
+                                <div class="show-gallery-slide" style="min-width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                                    <img src="{{ asset('storage/' . $photo) }}" alt="{{ $service->name }} - Photo {{ $i + 1 }}"
+                                         style="max-width: 100%; max-height: 100%; object-fit: contain; cursor: zoom-in;"
+                                         class="show-photo-zoomable" data-index="{{ $i }}">
+                                </div>
+                                @endforeach
+                            </div>
+
+                            @if(count($service->photos) > 1)
+                            <button class="gallery-nav gallery-prev" onclick="showGalleryNav(-1)">
+                                <i class="fa fa-chevron-left"></i>
+                            </button>
+                            <button class="gallery-nav gallery-next" onclick="showGalleryNav(1)">
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+
+                            <div class="position-absolute text-white" id="showGalleryCounter"
+                                 style="bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 10;
+                                        background: rgba(0,0,0,0.6); padding: 4px 14px; border-radius: 20px; font-size: 0.85rem;">
+                                1 / {{ count($service->photos) }}
+                            </div>
+
+                            <div class="position-absolute d-flex justify-content-center" id="showGalleryDots"
+                                 style="bottom: 50px; left: 50%; transform: translateX(-50%); z-index: 10; gap: 6px;">
+                                @foreach($service->photos as $i => $photo)
+                                <button class="gallery-dot {{ $i === 0 ? 'active' : '' }}" onclick="showGalleryGoTo({{ $i }})"></button>
+                                @endforeach
+                            </div>
+                            @endif
+                        </div>
+
+                        {{-- Miniatures --}}
+                        @if(count($service->photos) > 1)
+                        <div class="d-flex p-2" style="gap: 8px; overflow-x: auto;">
+                            @foreach($service->photos as $i => $photo)
+                            <img src="{{ asset('storage/' . $photo) }}" alt="Miniature {{ $i + 1 }}"
+                                 class="show-thumbnail {{ $i === 0 ? 'active' : '' }}"
+                                 onclick="showGalleryGoTo({{ $i }})"
+                                 style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px; cursor: pointer;
+                                        border: 2px solid transparent; opacity: 0.6; transition: all 0.2s;">
+                            @endforeach
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
+
                 <div class="card">
                     <div class="card-body">
                         <div class="mb-4">
@@ -42,7 +99,7 @@
                         <div class="row text-center">
                             <div class="col-md-4">
                                 <div class="p-3">
-                                    <i class="fa fa-euro fa-2x text-primary mb-2"></i>
+                                    <i class="fa fa-money fa-2x text-primary mb-2"></i>
                                     @if($service->hasActivePromotion())
                                         <h4>
                                             <span class="text-muted text-decoration-line-through">{{ $service->price }} FCFA</span>
@@ -137,5 +194,101 @@
 .text-decoration-line-through {
     text-decoration: line-through;
 }
+.gallery-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px);
+}
+.gallery-nav:hover { background: rgba(255,255,255,0.4); }
+.gallery-prev { left: 12px; }
+.gallery-next { right: 12px; }
+.gallery-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.4);
+    transition: all 0.3s; cursor: pointer;
+    border: none; padding: 0;
+}
+.gallery-dot.active {
+    background: #fff; width: 24px; border-radius: 4px;
+}
+.show-thumbnail.active {
+    border-color: #007bff !important;
+    opacity: 1 !important;
+}
 </style>
+
+@push('scripts')
+<script>
+(function() {
+    var showIndex = 0;
+    var totalPhotos = {{ $service->photos ? count($service->photos) : 0 }};
+    var track = document.getElementById('showGalleryTrack');
+    var counter = document.getElementById('showGalleryCounter');
+    var dotsContainer = document.getElementById('showGalleryDots');
+
+    if (!track || totalPhotos <= 0) return;
+
+    window.showGalleryGoTo = function(index) {
+        if (index < 0) index = totalPhotos - 1;
+        if (index >= totalPhotos) index = 0;
+        showIndex = index;
+
+        track.style.transform = 'translateX(-' + (showIndex * 100) + '%)';
+        if (counter) counter.textContent = (showIndex + 1) + ' / ' + totalPhotos;
+
+        var dots = dotsContainer ? dotsContainer.querySelectorAll('.gallery-dot') : [];
+        dots.forEach(function(d, i) { d.classList.toggle('active', i === showIndex); });
+
+        var thumbs = document.querySelectorAll('.show-thumbnail');
+        thumbs.forEach(function(t, i) { t.classList.toggle('active', i === showIndex); });
+    };
+
+    window.showGalleryNav = function(dir) {
+        showGalleryGoTo(showIndex + dir);
+    };
+
+    // Swipe tactile
+    var container = track.parentElement;
+    var startX = 0, isDragging = false, diffX = 0;
+
+    container.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        track.style.transition = 'none';
+    }, { passive: true });
+
+    container.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        diffX = e.touches[0].clientX - startX;
+        track.style.transform = 'translateX(' + (-(showIndex * container.offsetWidth) + diffX) + 'px)';
+    }, { passive: true });
+
+    container.addEventListener('touchend', function() {
+        if (!isDragging) return;
+        isDragging = false;
+        track.style.transition = 'transform 0.3s ease';
+        if (Math.abs(diffX) > 50) {
+            showGalleryGoTo(diffX < 0 ? showIndex + 1 : showIndex - 1);
+        } else {
+            showGalleryGoTo(showIndex);
+        }
+        diffX = 0;
+    });
+})();
+</script>
+@endpush
 @endsection

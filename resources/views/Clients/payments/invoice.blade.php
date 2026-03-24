@@ -1,8 +1,12 @@
+{{--
+    Vue : Facture de paiement - Vue imprimable
+    Description : Page de facture autonome (sans layout) avec en-tête entreprise, informations client, détails du rendez-vous, tableau des services, totaux avec TVA, mode de paiement et boutons d'impression/téléchargement.
+--}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Facture #{{ $payment->id }}</title>
+    <title>Facture #{{ $payment->reference }}</title>
     <style>
         * {
             margin: 0;
@@ -135,7 +139,7 @@
 
     <div class="invoice-header">
         <div class="company-info">
-            <h1>🏠 Salon de Coiffure</h1>
+            <h1>Salon de Coiffure</h1>
             <p>123 Rue du Salon</p>
             <p>75001 Paris, France</p>
             <p>Tél: 01 23 45 67 89</p>
@@ -143,12 +147,13 @@
         </div>
         <div class="invoice-info">
             <h2>FACTURE</h2>
-            <p><strong>N°:</strong> {{ str_pad($payment->id, 6, '0', STR_PAD_LEFT) }}</p>
+            <p><strong>N°:</strong> {{ $payment->reference }}</p>
             <p><strong>Date:</strong> {{ $payment->created_at->format('d/m/Y') }}</p>
             <p>
-                <span class="status-badge status-{{ $payment->status }}">
-                    {{ $payment->status == 'completed' ? 'Payé' : 'En attente' }}
-                </span>
+                @php
+                    $badgeClass = in_array($payment->status, ['paid', 'completed']) ? 'status-completed' : ($payment->status === 'failed' ? 'status-failed' : 'status-pending');
+                @endphp
+                <span class="status-badge {{ $badgeClass }}">{{ $payment->status_label }}</span>
             </p>
         </div>
     </div>
@@ -211,7 +216,7 @@
     </div>
 
     <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 30px;">
-        <p><strong>Mode de paiement:</strong> 
+        <p><strong>Mode de paiement:</strong>
             @switch($payment->method)
                 @case('stripe')
                     Carte bancaire

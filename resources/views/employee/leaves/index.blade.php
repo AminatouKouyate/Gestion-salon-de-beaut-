@@ -1,38 +1,36 @@
-@extends('layouts.master')
+{{--
+    Vue : Liste des congés employé
+    Description : Affiche l'historique des demandes de congé de l'employé avec statuts (en attente, approuvé, refusé).
+--}}
+@extends('layouts.employee-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Mes Demandes de Congé</h4>
-                    <p class="text-muted">Historique de vos demandes de congé</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-plane"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Mes Demandes de Congé</h2>
+                    <p class="beauty-page-subtitle">Historique de vos demandes de congé</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
-                    <li class="breadcrumb-item active">Congés</li>
-                </ol>
-            </div>
+            <a href="{{ route('employee.leaves.create') }}" class="beauty-btn-primary"><i class="fa fa-plus mr-2"></i>Nouvelle demande</a>
         </div>
 
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Liste de mes demandes de congé</h4>
-                        <a href="{{ route('employee.leaves.create') }}" class="btn btn-primary btn-sm">
-                            <i class="fa fa-plus"></i> Nouvelle demande
-                        </a>
+                <div class="beauty-card">
+                    <div class="beauty-card-header">
+                        <h4><i class="fa fa-plane mr-2" style="color:var(--primary);"></i>Liste de mes demandes de congé</h4>
                     </div>
-                    <div class="card-body">
+                    <div class="beauty-card-body">
                         @if($leaveRequests->isEmpty())
-                            <div class="text-center py-4">
-                                <i class="fa fa-calendar-o fa-3x text-muted mb-3"></i>
-                                <p class="text-muted">Aucune demande de congé trouvée</p>
-                                <a href="{{ route('employee.leaves.create') }}" class="btn btn-primary">
+                            <div class="beauty-empty">
+                                <i class="fa fa-calendar-o"></i>
+                                <h5>Aucune demande de congé</h5>
+                                <p>Aucune demande de congé trouvée</p>
+                                <a href="{{ route('employee.leaves.create') }}" class="beauty-btn-primary">
                                     Faire une demande
                                 </a>
                             </div>
@@ -45,6 +43,7 @@
                                             <th>Date de fin</th>
                                             <th>Raison</th>
                                             <th>Statut</th>
+                                            <th>Réponse de l'admin</th>
                                             <th>Date de demande</th>
                                         </tr>
                                     </thead>
@@ -63,6 +62,13 @@
                                                     <span class="badge badge-danger">Rejeté</span>
                                                 @else
                                                     <span class="badge badge-secondary">{{ $leave->status }}</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if($leave->admin_response)
+                                                    <span title="{{ $leave->admin_response }}">{{ Str::limit($leave->admin_response, 20) }}</span>
+                                                @else
+                                                    -
                                                 @endif
                                             </td>
                                             <td>{{ $leave->created_at->format('d/m/Y H:i') }}</td>

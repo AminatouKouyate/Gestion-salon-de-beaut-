@@ -1,38 +1,24 @@
+{{--
+    Vue : Barre latérale de navigation (partial)
+    Description : Composant de la barre latérale principale avec le menu de navigation adapté au rôle de l'utilisateur.
+--}}
 <div class="nk-sidebar">
     <div class="nk-nav-scroll">
         <ul class="metismenu" id="menu">
 
-            {{-- Menu pour les clients authentifiés avec le guard 'clients' --}}
-            @auth('clients')
+            {{-- Menu EXCLUSIF selon le guard actif - UN SEUL menu affiché --}}
+            @if(auth('clients')->check())
+                {{-- Menu Client --}}
                 @include('partials.sidebar.client-menu')
-            @endauth
-
-            {{-- Menu pour les admins authentifiés avec le guard par défaut 'web' --}}
-            @auth('web')
-                @include('partials.sidebar.admin-menu')
-            @endauth
-
-            {{-- Menu pour les employés authentifiés avec le guard 'employees' --}}
-            @auth('employees')
+            @elseif(auth('employees')->check())
+                {{-- Menu Employé --}}
                 @include('partials.sidebar.employee-menu')
-            @endauth
+            @elseif(auth('web')->check())
+                {{-- Menu Admin --}}
+                @include('partials.sidebar.admin-menu')
+            @endif
 
-            {{-- Séparateur et switch de thème --}}
-            <li class="nav-label mt-4">Apparence</li>
-            <li>
-                <div class="theme-switch-wrapper">
-                    <div class="d-flex align-items-center justify-content-between">
-                        <span class="theme-label">
-                            <i class="icon-bulb"></i>
-                            <span id="theme-label-text">Mode Sombre</span>
-                        </span>
-                        <label class="theme-switch">
-                            <input type="checkbox" id="theme-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                </div>
-            </li>
+
 
         </ul>
     </div>
@@ -40,8 +26,18 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Force l'affichage complet de la sidebar
         document.body.setAttribute('data-sidebar-style', 'full');
     });
 </script>
 
+<style>
+/* Sidebar theming to match client design */
+.nk-sidebar { background: transparent; }
+.nk-sidebar .metismenu li a { color: #333; display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:8px; }
+.nk-sidebar .metismenu li a .menu-icon { color: var(--primary); font-size:18px; }
+.nk-sidebar .metismenu li.active > a, .nk-sidebar .metismenu li > a:hover { background: var(--primary-soft); color: var(--primary); }
+.nk-sidebar .metismenu li.active > a .menu-icon, .nk-sidebar .metismenu li > a:hover .menu-icon { color: var(--primary); }
+.nk-sidebar .metismenu li .badge { background: var(--accent); color: #fff; }
+.nav-label { color: #8E8E8E; font-weight:700; }
+.theme-switch .slider { background: var(--primary-light); }
+</style>

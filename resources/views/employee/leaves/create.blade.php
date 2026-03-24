@@ -1,22 +1,21 @@
-@extends('layouts.master')
+{{--
+    Vue : Demande de congé employé
+    Description : Formulaire de création d'une demande de congé avec sélection des dates, type de congé et motif.
+--}}
+@extends('layouts.employee-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Demander un Congé</h4>
-                    <p class="text-muted">Soumettre une nouvelle demande de congé</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-plus-circle"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Demander un Congé</h2>
+                    <p class="beauty-page-subtitle">Soumettre une nouvelle demande de congé</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('employee.leaves.index') }}">Congés</a></li>
-                    <li class="breadcrumb-item active">Nouvelle demande</li>
-                </ol>
-            </div>
+            <a href="{{ route('employee.leaves.index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left mr-2"></i>Retour</a>
         </div>
 
         <div class="row">

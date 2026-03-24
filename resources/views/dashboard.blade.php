@@ -1,3 +1,7 @@
+{{--
+    Vue : Tableau de bord principal (page racine)
+    Description : Page de tableau de bord générique affichant un message de bienvenue avec le nom et le rôle de l'utilisateur connecté, et un bouton de déconnexion.
+--}}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,8 +16,7 @@
 </head>
 <body>
 
-    {{-- Inclure la sidebar qui s'adaptera au rôle de l'utilisateur --}}
-    @include('partials.sidebar')
+    {{-- Sidebar supprimée : utilise la barre de navigation supérieure client-style --}}
 
     <div class="content-body" style="min-height: 100vh;">
         <div class="container-fluid">

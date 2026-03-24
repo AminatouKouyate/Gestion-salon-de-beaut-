@@ -1,0 +1,282 @@
+<mxfile host="app.diagrams.net" agent="5.0" modified="2026-03-16T00:00:00.000Z" version="24.0.0" type="device">
+  <diagram name="Diagramme de Classes" id="cls1">
+    <mxGraphModel dx="2400" dy="1800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2400" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="clClient" value="Client" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="380" height="360" as="geometry"/>
+        </mxCell>
+        <mxCell id="clClientAttr" value="- id: int&#xa;- name: string&#xa;- email: string&#xa;- password: string&#xa;- phone: string&#xa;- photo: string&#xa;- loyalty_points: int&#xa;- active: boolean&#xa;- allergies: text" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clClient">
+          <mxGeometry y="26" width="380" height="160" as="geometry"/>
+        </mxCell>
+        <mxCell id="clClientLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clClient">
+          <mxGeometry y="186" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clClientMeth" value="+ appointments(): HasMany&lt;Appointment&gt;&#xa;+ payments(): HasMany&lt;Payment&gt;&#xa;+ notifications(): HasMany&lt;ClientNotification&gt;&#xa;+ chatMessages(): HasMany&lt;ChatMessage&gt;&#xa;+ getLoyaltyLevel(): string&#xa;+ getLoyaltyDiscount(): int&#xa;+ addLoyaltyPoints(points: int): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clClient">
+          <mxGeometry y="194" width="380" height="160" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clEmployee" value="Employé" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="40" width="380" height="400" as="geometry"/>
+        </mxCell>
+        <mxCell id="clEmployeeAttr" value="- id: int&#xa;- name: string&#xa;- email: string&#xa;- password: string&#xa;- phone: string&#xa;- photo: string&#xa;- role: string&#xa;- is_active: boolean&#xa;- work_start_time: time&#xa;- work_end_time: time" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clEmployee">
+          <mxGeometry y="26" width="380" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="clEmployeeLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clEmployee">
+          <mxGeometry y="196" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clEmployeeMeth" value="+ appointments(): HasMany&lt;Appointment&gt;&#xa;+ services(): BelongsToMany&lt;Service&gt;&#xa;+ schedules(): HasMany&lt;EmployeeSchedule&gt;&#xa;+ leaveRequests(): HasMany&lt;LeaveRequest&gt;&#xa;+ blockedSlots(): HasMany&lt;BlockedSlot&gt;&#xa;+ notifications(): HasMany&lt;EmployeeNotification&gt;&#xa;+ messages(): HasMany&lt;EmployeeMessage&gt;&#xa;+ getAvailableSlotsForDate(date, duration): array" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clEmployee">
+          <mxGeometry y="204" width="380" height="190" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clService" value="Service" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="960" y="40" width="380" height="380" as="geometry"/>
+        </mxCell>
+        <mxCell id="clServiceAttr" value="- id: int&#xa;- name: string&#xa;- description: text&#xa;- price: decimal&#xa;- promotion_price: decimal&#xa;- promotion_start: date&#xa;- promotion_end: date&#xa;- duration: int&#xa;- category: string&#xa;- active: boolean&#xa;- gender: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clService">
+          <mxGeometry y="26" width="380" height="190" as="geometry"/>
+        </mxCell>
+        <mxCell id="clServiceLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clService">
+          <mxGeometry y="216" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clServiceMeth" value="+ appointments(): HasMany&lt;Appointment&gt;&#xa;+ employees(): BelongsToMany&lt;Employee&gt;&#xa;+ hasActivePromotion(): boolean&#xa;+ getCurrentPrice(): decimal" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clService">
+          <mxGeometry y="224" width="380" height="150" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clRDV" value="RendezVous" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="520" width="380" height="340" as="geometry"/>
+        </mxCell>
+        <mxCell id="clRDVAttr" value="- id: int&#xa;- client_id: int (FK → clients)&#xa;- employee_id: int (FK → employees)&#xa;- service_id: int (FK → services)&#xa;- scheduled_at: datetime&#xa;- status: AppointmentStatus&#xa;- notes: text" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clRDV">
+          <mxGeometry y="26" width="380" height="130" as="geometry"/>
+        </mxCell>
+        <mxCell id="clRDVLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clRDV">
+          <mxGeometry y="156" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clRDVMeth" value="+ client(): BelongsTo&lt;Client&gt;&#xa;+ employee(): BelongsTo&lt;Employee&gt;&#xa;+ service(): BelongsTo&lt;Service&gt;&#xa;+ payment(): HasOne&lt;Payment&gt;&#xa;+ isPending(): boolean&#xa;+ isCompleted(): boolean&#xa;+ cancel(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clRDV">
+          <mxGeometry y="164" width="380" height="170" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clPayment" value="Paiement" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="500" y="940" width="380" height="280" as="geometry"/>
+        </mxCell>
+        <mxCell id="clPaymentAttr" value="- id: int&#xa;- appointment_id: int (FK → appointments)&#xa;- client_id: int (FK → clients)&#xa;- amount: decimal&#xa;- method: enum (cash, card, orange_money, wave)&#xa;- status: enum (pending, completed, failed)&#xa;- reference: string&#xa;- transaction_id: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clPayment">
+          <mxGeometry y="26" width="380" height="150" as="geometry"/>
+        </mxCell>
+        <mxCell id="clPaymentLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clPayment">
+          <mxGeometry y="176" width="380" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clPaymentMeth" value="+ appointment(): BelongsTo&lt;Appointment&gt;&#xa;+ client(): BelongsTo&lt;Client&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clPayment">
+          <mxGeometry y="184" width="380" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clSchedule" value="HoraireEmployé" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="40" width="340" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="clScheduleAttr" value="- id: int&#xa;- employee_id: int (FK → employees)&#xa;- day_of_week: int&#xa;- start_time: time&#xa;- end_time: time&#xa;- is_working: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clSchedule">
+          <mxGeometry y="26" width="340" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="clScheduleLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clSchedule">
+          <mxGeometry y="136" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clScheduleMeth" value="+ employee(): BelongsTo&lt;Employee&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clSchedule">
+          <mxGeometry y="144" width="340" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clBlocked" value="CréneauBloqué" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="320" width="340" height="260" as="geometry"/>
+        </mxCell>
+        <mxCell id="clBlockedAttr" value="- id: int&#xa;- employee_id: int (FK → employees)&#xa;- created_by: int (FK → users)&#xa;- start_datetime: datetime&#xa;- end_datetime: datetime&#xa;- reason: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clBlocked">
+          <mxGeometry y="26" width="340" height="120" as="geometry"/>
+        </mxCell>
+        <mxCell id="clBlockedLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clBlocked">
+          <mxGeometry y="146" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clBlockedMeth" value="+ employee(): BelongsTo&lt;Employee&gt;&#xa;+ creator(): BelongsTo&lt;User&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clBlocked">
+          <mxGeometry y="154" width="340" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clLeave" value="DemandeCongé" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="620" width="340" height="240" as="geometry"/>
+        </mxCell>
+        <mxCell id="clLeaveAttr" value="- id: int&#xa;- employee_id: int (FK → employees)&#xa;- start_date: date&#xa;- end_date: date&#xa;- reason: text&#xa;- status: enum (pending, approved, rejected)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clLeave">
+          <mxGeometry y="26" width="340" height="110" as="geometry"/>
+        </mxCell>
+        <mxCell id="clLeaveLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clLeave">
+          <mxGeometry y="136" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clLeaveMeth" value="+ employee(): BelongsTo&lt;Employee&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clLeave">
+          <mxGeometry y="144" width="340" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clNotifC" value="NotificationClient" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="460" width="340" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifCAttr" value="- id: int&#xa;- client_id: int (FK → clients)&#xa;- title: string&#xa;- message: text&#xa;- is_read: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clNotifC">
+          <mxGeometry y="26" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifCLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clNotifC">
+          <mxGeometry y="126" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifCMeth" value="+ client(): BelongsTo&lt;Client&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clNotifC">
+          <mxGeometry y="134" width="340" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clNotifE" value="NotificationEmployé" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="720" width="340" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifEAttr" value="- id: int&#xa;- employee_id: int (FK → employees)&#xa;- title: string&#xa;- message: text&#xa;- is_read: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clNotifE">
+          <mxGeometry y="26" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifELine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clNotifE">
+          <mxGeometry y="126" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clNotifEMeth" value="+ employee(): BelongsTo&lt;Employee&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clNotifE">
+          <mxGeometry y="134" width="340" height="80" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clChat" value="MessageChat" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="40" y="980" width="340" height="220" as="geometry"/>
+        </mxCell>
+        <mxCell id="clChatAttr" value="- id: int&#xa;- client_id: int (FK → clients)&#xa;- message: text&#xa;- is_bot: boolean" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clChat">
+          <mxGeometry y="26" width="340" height="90" as="geometry"/>
+        </mxCell>
+        <mxCell id="clChatLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clChat">
+          <mxGeometry y="116" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clChatMeth" value="+ client(): BelongsTo&lt;Client&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clChat">
+          <mxGeometry y="124" width="340" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clMsg" value="MessageEmployé" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="900" width="340" height="230" as="geometry"/>
+        </mxCell>
+        <mxCell id="clMsgAttr" value="- id: int&#xa;- employee_id: int (FK → employees)&#xa;- subject: string&#xa;- message: text&#xa;- reply: text" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clMsg">
+          <mxGeometry y="26" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clMsgLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clMsg">
+          <mxGeometry y="126" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clMsgMeth" value="+ employee(): BelongsTo&lt;Employee&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clMsg">
+          <mxGeometry y="134" width="340" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clStock" value="Stock" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="960" y="1260" width="340" height="180" as="geometry"/>
+        </mxCell>
+        <mxCell id="clStockAttr" value="- id: int&#xa;- name: string&#xa;- category: string&#xa;- quantity: int&#xa;- alert_threshold: int (default: 10)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clStock">
+          <mxGeometry y="26" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clStockLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clStock">
+          <mxGeometry y="126" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clStockMeth" value="(aucune relation)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;fontStyle=2;" vertex="1" parent="clStock">
+          <mxGeometry y="134" width="340" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clAdmin" value="Administrateur" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="960" y="940" width="340" height="200" as="geometry"/>
+        </mxCell>
+        <mxCell id="clAdminAttr" value="- id: int&#xa;- name: string&#xa;- email: string&#xa;- password: string&#xa;- photo: string" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clAdmin">
+          <mxGeometry y="26" width="340" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="clAdminLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clAdmin">
+          <mxGeometry y="126" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clAdminMeth" value="(gère via contrôleurs)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;fontStyle=2;" vertex="1" parent="clAdmin">
+          <mxGeometry y="134" width="340" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="clSetting" value="Paramètre" style="swimlane;fontStyle=1;align=center;startSize=26;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="1170" width="340" height="170" as="geometry"/>
+        </mxCell>
+        <mxCell id="clSettingAttr" value="- id: int&#xa;- key: string&#xa;- value: text" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;" vertex="1" parent="clSetting">
+          <mxGeometry y="26" width="340" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="clSettingLine" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=10;rotatable=0;labelPosition=left;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="clSetting">
+          <mxGeometry y="96" width="340" height="8" as="geometry"/>
+        </mxCell>
+        <mxCell id="clSettingMeth" value="(aucune relation)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=0;fontSize=11;fontStyle=2;" vertex="1" parent="clSetting">
+          <mxGeometry y="104" width="340" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel1" value="1     prend     0..*" style="endArrow=open;endSize=12;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clClientAttr" target="clRDVAttr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel2" value="1    assigné à    0..*" style="endArrow=open;endSize=12;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clEmployee" target="clRDV">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel3" value="1    concerne    0..*" style="endArrow=open;endSize=12;html=1;exitX=0;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clService" target="clRDV">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel4" value="1    génère    0..1" style="endArrow=open;endSize=12;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clRDV" target="clPayment">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel5" value="1    effectue    0..*" style="endArrow=open;endSize=12;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clClient" target="clPaymentAttr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel6" value="1    a pour horaire    0..*" style="endArrow=open;endSize=12;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clEmployeeAttr" target="clScheduleAttr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel7" value="1    soumet    0..*" style="endArrow=open;endSize=12;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clEmployeeMeth" target="clLeaveAttr">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel8" value="*    qualifié pour    *&#xa;(employee_service)" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=11;dashed=0;strokeWidth=2;" edge="1" parent="1" source="clEmployeeLine" target="clServiceLine">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel9" value="1    reçoit    0..*" style="endArrow=open;endSize=12;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontSize=11;" edge="1" parent="1" source="clClient" target="clNotifC">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel10" value="" style="endArrow=open;endSize=12;html=1;fontSize=11;dashed=0;exitX=0;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="clEmployee" target="clNotifE">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel11" value="1    utilise    0..*" style="endArrow=open;endSize=12;html=1;fontSize=11;" edge="1" parent="1" source="clNotifC" target="clChat">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel12" value="1    envoie    0..*" style="endArrow=open;endSize=12;html=1;fontSize=11;" edge="1" parent="1" source="clEmployee" target="clMsg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel13" value="" style="endArrow=open;endSize=12;html=1;fontSize=11;" edge="1" parent="1" source="clEmployee" target="clBlocked">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel14" value="«gère»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clEmployee">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel15" value="«gère»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clClient">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel16" value="«gère»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clService">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel17" value="«gère»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clStock">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel18" value="«crée»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clBlocked">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="rel19" value="«configure»" style="endArrow=open;endSize=12;html=1;dashed=1;fontSize=11;strokeColor=#b85450;" edge="1" parent="1" source="clAdmin" target="clSetting">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

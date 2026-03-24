@@ -1,21 +1,27 @@
-@extends('layouts.master')
+{{--
+    Vue : Notifications de l'employé
+    Description : Liste des notifications de l'employé avec marquage comme lu.
+--}}
+@extends('layouts.employee-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Mes Notifications</h4>
-                    <p class="text-muted">Messages et notifications de l'administrateur</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-bell"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Mes Notifications</h2>
+                    <p class="beauty-page-subtitle">Messages et notifications de l'administrateur</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
-                    <li class="breadcrumb-item active">Notifications</li>
-                </ol>
-            </div>
+            @if($notifications->where('is_read', false)->count() > 0)
+                <form action="{{ route('employee.notifications.markAllAsRead') }}" method="POST" class="d-inline">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit" class="beauty-btn-primary"><i class="fa fa-check-double mr-2"></i>Tout marquer comme lu</button>
+                </form>
+            @endif
         </div>
 
         <div class="row">
@@ -23,21 +29,13 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Liste de mes notifications</h4>
-                        @if($notifications->where('is_read', false)->count() > 0)
-                            <form action="{{ route('employee.notifications.markAllAsRead') }}" method="POST" class="d-inline">
-                                @csrf
-                                @method('PATCH')
-                                <button type="submit" class="btn btn-outline-info btn-sm">
-                                    <i class="fa fa-check-double"></i> Tout marquer comme lu
-                                </button>
-                            </form>
-                        @endif
                     </div>
                     <div class="card-body">
                         @if($notifications->isEmpty())
-                            <div class="text-center py-4">
-                                <i class="fa fa-bell-o fa-3x text-muted mb-3"></i>
-                                <p class="text-muted">Aucune notification trouvée</p>
+                            <div class="beauty-empty">
+                                <i class="fa fa-bell-o"></i>
+                                <h5>Aucune notification</h5>
+                                <p>Aucune notification trouvée</p>
                             </div>
                         @else
                             <div class="list-group">

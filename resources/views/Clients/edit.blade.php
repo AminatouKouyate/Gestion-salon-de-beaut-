@@ -1,3 +1,7 @@
+{{--
+    Vue : Modification d'un client (admin)
+    Description : Formulaire de modification des informations d'un client (nom, email, téléphone) par l'administrateur.
+--}}
 @extends('layouts.master')
 
 @section('content')

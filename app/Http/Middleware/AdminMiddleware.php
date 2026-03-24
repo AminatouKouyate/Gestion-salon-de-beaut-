@@ -8,10 +8,21 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use App\Models\User;
 
+/**
+ * Middleware d'autorisation administrateur.
+ *
+ * Vérifie que l'utilisateur authentifié via le guard "web" possède
+ * le rôle administrateur avant de lui donner accès aux routes protégées
+ * du back-office d'administration.
+ */
 class AdminMiddleware
 {
     /**
-     * Handle an incoming request.
+     * Traite la requête entrante et vérifie les droits administrateur.
+     *
+     * @param  \Illuminate\Http\Request  $request  La requête HTTP entrante
+     * @param  \Closure  $next  Le prochain middleware ou contrôleur dans la pile
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
     {

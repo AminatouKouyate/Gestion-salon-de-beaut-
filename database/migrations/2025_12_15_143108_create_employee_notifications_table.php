@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('message');
-            $table->enum('type', ['info', 'warning', 'success', 'appointment'])->default('info');
+            $table->enum('type', ['info', 'warning', 'success', 'appointment', 'message_reply'])->default('info');
             $table->boolean('is_read')->default(false);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();

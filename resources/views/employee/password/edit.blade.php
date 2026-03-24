@@ -1,45 +1,24 @@
-@extends('layouts.master')
+{{--
+    Vue : Changement de mot de passe employé
+    Description : Formulaire de modification du mot de passe de l'employé avec vérification de l'ancien mot de passe.
+--}}
+@extends('layouts.employee-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Changer mon mot de passe</h4>
-                    <p class="text-muted">Modifiez votre mot de passe de connexion</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-lock"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Changer mon mot de passe</h2>
+                    <p class="beauty-page-subtitle">Modifiez votre mot de passe de connexion</p>
                 </div>
-            </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
-                    <li class="breadcrumb-item active">Mot de passe</li>
-                </ol>
             </div>
         </div>
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>Succès!</strong> {{ session('success') }}
-            </div>
-        @endif
-
-        @if($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>Erreur!</strong>
-                <ul class="mb-0">
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+        @include('partials.success')
+        @include('partials.error')
 
         <div class="row">
             <div class="col-lg-6">

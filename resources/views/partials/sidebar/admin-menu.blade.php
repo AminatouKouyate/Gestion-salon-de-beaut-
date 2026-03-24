@@ -1,74 +1,121 @@
-
-
+{{--
+    Vue : Menu sidebar - Administration (partial)
+    Description : Liens de navigation de la sidebar pour l'espace administrateur : tableau de bord, clients, employés, services, rendez-vous, paiements, paramètres.
+--}}
         <!-- Label -->
-        <li class="nav-label text-uppercase text-muted mb-3">
-            Administration
-        </li>
+        <li class="nav-label">Administration</li>
 
         <!-- Dashboard -->
-        <li class="mb-2">
-            <a href="{{ route('admin.dashboard') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-speedometer2 me-2"></i>
-                <span>Tableau de bord</span>
+        <li>
+            <a href="{{ route('admin.dashboard') }}">
+                <i class="icon-speedometer menu-icon"></i>
+                <span class="nav-text">Tableau de bord</span>
             </a>
         </li>
 
         <!-- Employés -->
-        <li class="mb-2">
-            <a href="{{ route('admin.employees.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-people me-2"></i>
-                <span>Employés</span>
+        <li>
+            <a href="{{ route('admin.employees.index') }}">
+                <i class="icon-people menu-icon"></i>
+                <span class="nav-text">Employés</span>
             </a>
         </li>
 
         <!-- Clients -->
-        <li class="mb-2">
-            <a href="{{ route('admin.clients.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-person me-2"></i>
-                <span>Clients</span>
+        <li>
+            <a href="{{ route('admin.clients.index') }}">
+                <i class="icon-user menu-icon"></i>
+                <span class="nav-text">Clients</span>
             </a>
         </li>
 
         <!-- Services -->
-        <li class="mb-2">
-            <a href="{{ route('admin.services.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-layers me-2"></i>
-                <span>Services</span>
+        <li>
+            <a href="{{ route('admin.services.index') }}">
+                <i class="icon-layers menu-icon"></i>
+                <span class="nav-text">Services</span>
             </a>
         </li>
 
         <!-- Rendez-vous -->
-        <li class="mb-2">
-            <a href="{{ route('admin.appointments.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-calendar-check me-2"></i>
-                <span>Rendez-vous</span>
+        <li>
+            <a href="{{ route('admin.appointments.index') }}">
+                <i class="icon-calendar menu-icon"></i>
+                <span class="nav-text">Rendez-vous</span>
             </a>
         </li>
 
+        <!-- Planning -->
+        <li class="has-submenu">
+            <a href="javascript:void(0);">
+                <i class="fa fa-calendar menu-icon"></i>
+                <span class="nav-text">Planning</span>
+                <i class="fa fa-angle-right pull-right"></i>
+            </a>
+            <ul class="submenu">
+                <li>
+                    <a href="{{ route('admin.schedules.index') }}">
+                        <i class="fa fa-calendar menu-icon"></i>
+                        <span class="nav-text">Planning général</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.employees.index') }}">
+                        <i class="fa fa-clock-o menu-icon"></i>
+                        <span class="nav-text">Horaires employés</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
         <!-- Paiements -->
-        <li class="mb-2">
-            <a href="{{ route('admin.payments.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-credit-card me-2"></i>
-                <span>Paiements</span>
+        <li>
+            <a href="{{ route('admin.payments.index') }}">
+                <i class="icon-credit-card menu-icon"></i>
+                <span class="nav-text">Paiements</span>
             </a>
         </li>
 
         <!-- Stock -->
-        <li class="mb-2">
-            <a href="{{ route('admin.stocks.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-basket me-2"></i>
-                <span>Stock</span>
+        <li>
+            <a href="{{ route('admin.stocks.index') }}">
+                <i class="icon-basket-loaded menu-icon"></i>
+                <span class="nav-text">Stock</span>
+            </a>
+        </li>
+
+        <!-- Demandes de congé -->
+        <li>
+            <a href="{{ route('admin.leaves.index') }}">
+                <i class="icon-notebook menu-icon"></i>
+                <span class="nav-text">Congés</span>
+                @php
+                    $pendingLeavesCount = \App\Models\LeaveRequest::pending()->count();
+                @endphp
+                @if($pendingLeavesCount > 0)
+                    <span class="badge badge-warning float-right">{{ $pendingLeavesCount }}</span>
+                @endif
+            </a>
+        </li>
+
+        <!-- Messages employés -->
+        <li>
+            <a href="{{ route('admin.employee-messages.index') }}">
+                <i class="icon-envelope menu-icon"></i>
+                <span class="nav-text">Messages</span>
+                @php
+                    $pendingMessagesCount = \App\Models\EmployeeMessage::pending()->count();
+                @endphp
+                @if($pendingMessagesCount > 0)
+                    <span class="badge badge-warning float-right">{{ $pendingMessagesCount }}</span>
+                @endif
             </a>
         </li>
 
         <!-- Rapports -->
-        <li class="mb-2">
-            <a href="{{ route('admin.reports.index') }}" class="text-white text-decoration-none d-flex align-items-center">
-                <i class="bi bi-bar-chart-line me-2"></i>
-                <span>Rapports</span>
+        <li>
+            <a href="{{ route('admin.reports.index') }}">
+                <i class="icon-graph menu-icon"></i>
+                <span class="nav-text">Rapports</span>
             </a>
         </li>
-
-
-<!-- Bootstrap Icons CDN (à inclure dans ton master layout si pas déjà fait) -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">

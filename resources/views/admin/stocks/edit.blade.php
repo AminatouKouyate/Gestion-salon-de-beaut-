@@ -1,21 +1,32 @@
-@extends('layouts.master')
+@extends('layouts.admin-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Modifier un produit en stock</h1>
-    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">Retour à la liste</a>
+<div class="beauty-page-header">
+    <div class="beauty-page-header-left">
+        <div class="beauty-page-icon"><i class="fa fa-cubes"></i></div>
+        <div>
+            <h2 class="beauty-page-title">Modifier le produit </h2>
+            <p class="beauty-page-subtitle">Mettre à jour les informations</p>
+        </div>
+    </div>
+    <a href="{{ route('admin.stocks.index') }}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left mr-2"></i>Retour à la liste
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
+@include('partials.success')
+@include('partials.error')
+
+<div class="beauty-card">
+    <div class="beauty-card-body">
         <form action="{{ route('admin.stocks.update', $stock->id) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="mb-3">
                 <label class="form-label">Nom du produit</label>
-                <input type="text" name="product_name" class="form-control" value="{{ $stock->product_name }}" required>
+                <input type="text" name="name" class="form-control" value="{{ $stock->name }}" required>
             </div>
             <div class="mb-3">
                 <label class="form-label">Quantité</label>

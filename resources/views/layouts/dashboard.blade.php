@@ -1,3 +1,7 @@
+{{--
+    Vue : Layout tableau de bord (exemple)
+    Description : Page de démonstration du tableau de bord avec des cartes statistiques (produits vendus, profit, clients, satisfaction). Template de référence.
+--}}
 @extends('master')
 @section('content')
     <div class="content-body d-flex flex-column">

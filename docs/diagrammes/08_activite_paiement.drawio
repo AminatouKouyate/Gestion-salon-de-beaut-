@@ -1,0 +1,171 @@
+<mxfile host="app.diagrams.net" agent="5.0" modified="2026-03-16T00:00:00.000Z" version="24.0.0" type="device">
+  <diagram name="Activité - Paiement" id="act3">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="2200" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Diagramme d'Activité — Processus de Paiement" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="500" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="laneClient" value="Client" style="shape=swimlane;startSize=30;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="400" height="2100" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneSystem" value="Système" style="shape=swimlane;startSize=30;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="60" width="500" height="2100" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneGateway" value="Passerelle de Paiement" style="shape=swimlane;startSize=30;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="60" width="350" height="2100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="start" value="" style="ellipse;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="210" y="100" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a1" value="Se connecter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="160" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" value="Accéder aux paiements" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="230" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="s1" value="Charger RDV terminés&#xa;non payés" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="300" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="a3" value="Sélectionner un RDV à payer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="380" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a4" value="Choisir la méthode&#xa;de paiement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="450" width="170" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="s2" value="Créer le paiement&#xa;(Payment::create)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="530" width="250" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d1" value="Quelle&#xa;méthode ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="615" y="620" width="130" height="90" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sE1" value="Enregistrer paiement&#xa;(statut: completed)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="750" width="200" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sS1" value="Créer session Stripe&#xa;(Checkout)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="850" width="230" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="aS1" value="Redirection vers Stripe" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="140" y="930" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="gS1" value="Afficher formulaire&#xa;sécurisé" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="930" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="aS2" value="Entrer informations carte" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1010" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="gS2" value="Traiter le paiement" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1010" width="200" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="dS" value="Réussi ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="1080" width="100" height="70" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="gS3" value="Envoyer webhook&#xa;(payment_intent.succeeded)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1180" width="200" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="sS2" value="Statut → completed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1180" width="230" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sS3" value="Statut → failed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1090" width="200" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="sM1" value="Initier paiement mobile&#xa;(Orange Money / Wave)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1280" width="250" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="gM1" value="Envoyer notification USSD" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1280" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="sM2" value="Statut → processing" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1360" width="250" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="aM1" value="Confirmer sur téléphone" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1360" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="gM2" value="Envoyer callback (success)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1010" y="1430" width="200" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="sM3" value="Statut → completed" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1430" width="250" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="fork" value="" style="shape=line;html=1;strokeWidth=4;strokeColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1530" width="360" height="10" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="p1" value="Ajouter points&#xa;de fidélité" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="480" y="1580" width="150" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="p2" value="Envoyer notification&#xa;de confirmation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="650" y="1580" width="160" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="p3" value="Générer facture PDF" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="830" y="1580" width="160" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="join" value="" style="shape=line;html=1;strokeWidth=4;strokeColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1670" width="360" height="10" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="aFinal" value="Consulter facture" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1730" width="170" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="end" value="" style="ellipse;html=1;shape=doubleCircle;whiteSpace=wrap;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="210" y="1810" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f0" style="endArrow=block;endFill=1;" edge="1" source="start" target="a1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f1" style="endArrow=block;endFill=1;" edge="1" source="a1" target="a2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f2" style="endArrow=block;endFill=1;" edge="1" source="a2" target="s1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f3" style="endArrow=block;endFill=1;" edge="1" source="s1" target="a3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f4" style="endArrow=block;endFill=1;" edge="1" source="a3" target="a4" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f5" style="endArrow=block;endFill=1;" edge="1" source="a4" target="s2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f6" style="endArrow=block;endFill=1;" edge="1" source="s2" target="d1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="fE" value="Espèces" style="endArrow=block;endFill=1;fontSize=10;fontColor=#00AA00;" edge="1" source="d1" target="sE1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fE1" style="endArrow=block;endFill=1;" edge="1" source="sE1" target="fork" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="fS" value="Carte (Stripe)" style="endArrow=block;endFill=1;fontSize=10;fontColor=#9673a6;" edge="1" source="d1" target="sS1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS1" style="endArrow=block;endFill=1;" edge="1" source="sS1" target="aS1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS2" style="endArrow=block;endFill=1;" edge="1" source="aS1" target="gS1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS3" style="endArrow=block;endFill=1;" edge="1" source="gS1" target="aS2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS4" style="endArrow=block;endFill=1;" edge="1" source="aS2" target="gS2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS5" style="endArrow=block;endFill=1;" edge="1" source="gS2" target="dS" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS6" value="Oui" style="endArrow=block;endFill=1;fontSize=10;fontColor=#00AA00;" edge="1" source="dS" target="gS3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS7" style="endArrow=block;endFill=1;" edge="1" source="gS3" target="sS2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS8" style="endArrow=block;endFill=1;" edge="1" source="sS2" target="fork" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fS9" value="Non" style="endArrow=block;endFill=1;fontSize=10;fontColor=#FF0000;" edge="1" source="dS" target="sS3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="fM" value="Mobile Money" style="endArrow=block;endFill=1;fontSize=10;fontColor=#9673a6;" edge="1" source="d1" target="sM1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM1" style="endArrow=block;endFill=1;" edge="1" source="sM1" target="gM1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM2" style="endArrow=block;endFill=1;" edge="1" source="gM1" target="sM2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM3" style="endArrow=block;endFill=1;" edge="1" source="sM2" target="aM1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM4" style="endArrow=block;endFill=1;" edge="1" source="aM1" target="gM2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM5" style="endArrow=block;endFill=1;" edge="1" source="gM2" target="sM3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fM6" style="endArrow=block;endFill=1;" edge="1" source="sM3" target="fork" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="fp1" style="endArrow=block;endFill=1;" edge="1" source="fork" target="p1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fp2" style="endArrow=block;endFill=1;" edge="1" source="fork" target="p2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fp3" style="endArrow=block;endFill=1;" edge="1" source="fork" target="p3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="jp1" style="endArrow=block;endFill=1;" edge="1" source="p1" target="join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="jp2" style="endArrow=block;endFill=1;" edge="1" source="p2" target="join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="jp3" style="endArrow=block;endFill=1;" edge="1" source="p3" target="join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fFinal" style="endArrow=block;endFill=1;" edge="1" source="join" target="aFinal" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fEnd" style="endArrow=block;endFill=1;" edge="1" source="aFinal" target="end" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

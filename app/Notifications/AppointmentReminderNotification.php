@@ -7,17 +7,44 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Notification de rappel de rendez-vous.
+ *
+ * Envoyée automatiquement au client la veille de son rendez-vous
+ * pour lui rappeler le service, la date et l'heure prévus.
+ * Diffusée par email et enregistrée en base de données.
+ */
 class AppointmentReminderNotification extends Notification
 {
     use Queueable;
 
+    /**
+     * Crée une nouvelle instance de la notification.
+     *
+     * @param  \App\Models\Appointment  $appointment  Le rendez-vous à rappeler
+     */
     public function __construct(public Appointment $appointment) {}
 
+    /**
+     * Détermine les canaux de diffusion de la notification.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string>  Les canaux utilisés : email et base de données
+     */
     public function via($notifiable): array
     {
         return ['mail', 'database'];
     }
 
+    /**
+     * Construit la représentation email de la notification.
+     *
+     * Envoie un email de rappel au client avec les détails du rendez-vous
+     * prévu pour le lendemain.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
@@ -31,6 +58,12 @@ class AppointmentReminderNotification extends Notification
             ->line('À demain !');
     }
 
+    /**
+     * Construit la représentation en tableau pour le stockage en base de données.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string, mixed>  Les données du rappel à stocker
+     */
     public function toArray($notifiable): array
     {
         return [

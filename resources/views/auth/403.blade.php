@@ -1,3 +1,7 @@
+{{--
+    Vue : Page d'erreur 403 - Accès interdit (auth)
+    Description : Page d'erreur autonome affichée lorsqu'un utilisateur tente d'accéder à une ressource non autorisée dans l'espace d'authentification.
+--}}
 <!DOCTYPE html>
 <html lang="fr" class="h-100">
 <head>

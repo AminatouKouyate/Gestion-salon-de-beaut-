@@ -9,8 +9,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('appointments', function (Blueprint $table) {
-            $table->boolean('reminder_sent')->default(false)->after('notes');
-            $table->timestamp('reminder_sent_at')->nullable()->after('reminder_sent');
+            if (!Schema::hasColumn('appointments', 'reminder_sent')) {
+                $table->boolean('reminder_sent')->default(false)->after('notes');
+            }
+            if (!Schema::hasColumn('appointments', 'reminder_sent_at')) {
+                $table->timestamp('reminder_sent_at')->nullable()->after('reminder_sent');
+            }
         });
     }
 

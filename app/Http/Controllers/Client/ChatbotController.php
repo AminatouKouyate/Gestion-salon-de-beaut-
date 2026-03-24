@@ -12,8 +12,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
+/**
+ * Contrôleur pour le chatbot intelligent côté client.
+ * 
+ * Gère les conversations automatisées avec les clients pour répondre à leurs questions
+ * sur les services, rendez-vous, paiements, fidélité et informations générales du salon.
+ */
 class ChatbotController extends Controller
 {
+    /**
+     * Liste des intentions reconnues par le chatbot avec leurs mots-clés associés.
+     *
+     * @var array<string, array<string>>
+     */
     private array $intents = [
         'greeting' => ['bonjour', 'salut', 'hello', 'bonsoir', 'coucou', 'hey', 'hi'],
         'services' => ['services', 'prestations', 'offres', 'catalogue', 'tarifs', 'prix', 'coupe', 'couleur', 'soin', 'coiffure'],
@@ -33,6 +44,11 @@ class ChatbotController extends Controller
         'bye' => ['au revoir', 'bye', 'à bientôt', 'ciao', 'adieu'],
     ];
 
+    /**
+     * Affiche l'interface du chatbot avec l'historique des conversations.
+     *
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         $client = Auth::guard('clients')->user();
@@ -55,9 +71,14 @@ class ChatbotController extends Controller
                 });
         }
 
-        return view('Clients.chatbot.index', compact('client', 'chatHistory'));
+        return view('clients.chatbot.index', compact('client', 'chatHistory'));
     }
 
+    /**
+     * Affiche l'historique complet des conversations du client.
+     *
+     * @return \Illuminate\View\View
+     */
     public function history()
     {
         $client = Auth::guard('clients')->user();
@@ -66,16 +87,25 @@ class ChatbotController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(50);
 
-        // Group by date
+        // Regrouper les messages par date
         $conversations = $messages->getCollection()->groupBy(function ($message) {
             return $message->created_at->format('Y-m-d');
         });
 
-        return view('Clients.chatbot.history', [
+        return view('clients.chatbot.history', [
             'conversations' => $messages->setCollection($conversations->flatten(1)),
         ]);
     }
 
+    /**
+     * Traite un message envoyé par le client et génère une réponse.
+     *
+     * Détecte l'intention du message, génère une réponse appropriée
+     * et sauvegarde la conversation dans la base de données.
+     *
+     * @param Request $request Requête contenant le message du client
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function sendMessage(Request $request)
     {
         $request->validate(['message' => 'required|string|max:500']);
@@ -113,6 +143,12 @@ class ChatbotController extends Controller
         ]);
     }
 
+    /**
+     * Détecte l'intention d'un message en analysant les mots-clés.
+     *
+     * @param string $message Le message à analyser
+     * @return string L'intention détectée ou 'unknown' si non reconnue
+     */
     private function detectIntent(string $message): string
     {
         foreach ($this->intents as $intent => $keywords) {
@@ -125,6 +161,14 @@ class ChatbotController extends Controller
         return 'unknown';
     }
 
+    /**
+     * Génère une réponse appropriée selon l'intention détectée.
+     *
+     * @param string $intent L'intention détectée
+     * @param string $message Le message original du client
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Tableau contenant le texte de réponse, suggestions et actions
+     */
     private function generateResponse(string $intent, string $message, $client): array
     {
         return match ($intent) {
@@ -148,6 +192,12 @@ class ChatbotController extends Controller
         };
     }
 
+    /**
+     * Génère une réponse de salutation personnalisée.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec message de bienvenue et suggestions
+     */
     private function greetingResponse($client): array
     {
         $name = $client ? $client->name : 'cher client';
@@ -163,15 +213,21 @@ class ChatbotController extends Controller
         if ($client) {
             $level = $client->getLoyaltyLevel();
             $points = $client->loyalty_points ?? 0;
-            $loyaltyInfo = "\n\n🎖️ Votre niveau fidélité : **{$level}** ({$points} points)";
+            $loyaltyInfo = "\n\nVotre niveau fidélité : **{$level}** ({$points} points)";
         }
 
         return [
-            'text' => "$greeting $name ! 👋 Bienvenue au salon. Comment puis-je vous aider aujourd'hui ?$loyaltyInfo",
+            'text' => "$greeting $name ! Bienvenue au salon. Comment puis-je vous aider aujourd'hui ?$loyaltyInfo",
             'suggestions' => ['Voir les services', 'Promotions', 'Prendre rendez-vous', 'Mes points fidélité'],
         ];
     }
 
+    /**
+     * Génère une réponse listant les services disponibles par catégorie.
+     *
+     * @param string $message Le message original pour affiner la recherche
+     * @return array Réponse avec liste des services et leurs tarifs
+     */
     private function servicesResponse(string $message): array
     {
         $services = Service::active()->get();
@@ -184,7 +240,7 @@ class ChatbotController extends Controller
         }
 
         $categories = $services->groupBy('category');
-        $text = "✨ **Nos services** :\n\n";
+        $text = "**Nos services** :\n\n";
 
         foreach ($categories as $category => $categoryServices) {
             $catName = $category ?: 'Général';
@@ -192,7 +248,7 @@ class ChatbotController extends Controller
             foreach ($categoryServices as $service) {
                 $priceDisplay = $service->price . ' FCFA';
                 if ($service->hasActivePromotion()) {
-                    $priceDisplay = "~~{$service->price} FCFA~~ **{$service->promotion_price} FCFA** 🔥";
+                    $priceDisplay = "~~{$service->price} FCFA~~ **{$service->promotion_price} FCFA**";
                 }
                 $text .= "• {$service->name} - $priceDisplay ({$service->duration} min)\n";
             }
@@ -208,18 +264,23 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse listant les promotions en cours.
+     *
+     * @return array Réponse avec les promotions actives et réductions
+     */
     private function promotionsResponse(): array
     {
         $promotions = Service::active()->withPromotion()->get();
 
         if ($promotions->isEmpty()) {
             return [
-                'text' => "Pas de promotion en cours actuellement.\n\nMais restez connecté, de nouvelles offres arrivent bientôt ! 🎁",
+                'text' => "Pas de promotion en cours actuellement.\n\nMais restez connecté, de nouvelles offres arrivent bientôt !",
                 'suggestions' => ['Voir les services', 'Mes points fidélité', 'Prendre rendez-vous'],
             ];
         }
 
-        $text = "🔥 **Promotions en cours** :\n\n";
+        $text = "**Promotions en cours** :\n\n";
 
         foreach ($promotions as $service) {
             $discount = $service->getDiscountPercentage();
@@ -231,15 +292,21 @@ class ChatbotController extends Controller
             $text .= "• ~~{$service->price} FCFA~~ → **{$service->promotion_price} FCFA**\n\n";
         }
 
-        $text .= "Profitez-en vite ! 🏃‍♂️";
+        $text .= "Profitez-en vite !";
 
         return [
             'text' => $text,
             'suggestions' => ['Prendre rendez-vous', 'Tous les services', 'Mes points fidélité'],
-            'actions' => [['type' => 'link', 'label' => 'Réserver maintenant', 'url' => '/appointments/create']],
+            'actions' => [['type' => 'link', 'label' => 'Réserver maintenant', 'url' => route('client.appointments.create')]],
         ];
     }
 
+    /**
+     * Génère une réponse pour aider à la prise de rendez-vous.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec informations sur les employés et services disponibles
+     */
     private function appointmentResponse($client): array
     {
         $employees = Employee::all();
@@ -248,24 +315,30 @@ class ChatbotController extends Controller
 
         $promoText = '';
         if ($promotions->isNotEmpty()) {
-            $promoText = "\n\n🔥 **En promotion** :\n";
+            $promoText = "\n\n**En promotion** :\n";
             foreach ($promotions as $promo) {
                 $promoText .= "• {$promo->name} (-{$promo->getDiscountPercentage()}%)\n";
             }
         }
 
         return [
-            'text' => "📅 Je peux vous aider à réserver un rendez-vous !\n\n" .
+            'text' => "Je peux vous aider à réserver un rendez-vous !\n\n" .
                 "**Employés disponibles** : " . $employees->pluck('name')->join(', ') . "\n\n" .
                 "**Services populaires** :\n" .
                 $services->map(fn($s) => "• {$s->name} ({$s->getCurrentPrice()} FCFA)")->join("\n") .
                 $promoText . "\n\n" .
-                "👉 [Cliquez ici pour réserver](/appointments/create)",
+                "[Cliquez ici pour réserver](" . route('client.appointments.create') . ")",
             'suggestions' => ['Voir tous les services', 'Promotions', 'Mes rendez-vous'],
-            'actions' => [['type' => 'link', 'label' => 'Réserver', 'url' => '/appointments/create']],
+            'actions' => [['type' => 'link', 'label' => 'Réserver', 'url' => route('client.appointments.create')]],
         ];
     }
 
+    /**
+     * Génère une réponse pour l'annulation d'un rendez-vous.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec le prochain rendez-vous annulable
+     */
     private function cancelResponse($client): array
     {
         if (!$client) {
@@ -277,7 +350,7 @@ class ChatbotController extends Controller
 
         $upcoming = Appointment::where('client_id', $client->id)
             ->whereIn('status', ['pending', 'confirmed'])
-            ->where('date', '>=', now()->toDateString())
+            ->where('scheduled_at', '>=', now())
             ->with('service')
             ->first();
 
@@ -292,15 +365,20 @@ class ChatbotController extends Controller
             'text' => "Votre prochain rendez-vous :\n" .
                 "📌 **{$upcoming->service->name}**\n" .
                 "📅 {$upcoming->date->format('d/m/Y')} à {$upcoming->time}\n\n" .
-                "👉 [Gérer ce rendez-vous](/appointments/{$upcoming->id})",
+                "👉 [Gérer ce rendez-vous](" . route('client.appointments.show', $upcoming->id) . ")",
             'suggestions' => ['Modifier', 'Annuler', 'Garder'],
             'actions' => [
-                ['type' => 'link', 'label' => 'Modifier', 'url' => "/appointments/{$upcoming->id}/edit"],
-                ['type' => 'danger', 'label' => 'Annuler', 'url' => "/appointments/{$upcoming->id}"],
+                ['type' => 'link', 'label' => 'Modifier', 'url' => route('client.appointments.edit', $upcoming->id)],
+                ['type' => 'danger', 'label' => 'Annuler', 'url' => route('client.appointments.show', $upcoming->id)],
             ],
         ];
     }
 
+    /**
+     * Génère une réponse avec les horaires d'ouverture du salon.
+     *
+     * @return array Réponse avec les horaires par jour
+     */
     private function hoursResponse(): array
     {
         return [
@@ -313,6 +391,11 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse avec l'adresse et la localisation du salon.
+     *
+     * @return array Réponse avec l'adresse complète
+     */
     private function locationResponse(): array
     {
         return [
@@ -324,6 +407,12 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse sur les modes de paiement acceptés.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec les méthodes de paiement et paiements en attente
+     */
     private function paymentResponse($client): array
     {
         $text = "💳 **Modes de paiement acceptés** :\n\n" .
@@ -347,10 +436,16 @@ class ChatbotController extends Controller
         return [
             'text' => $text,
             'suggestions' => ['Mes paiements', 'Mes factures', 'Services'],
-            'actions' => $client ? [['type' => 'link', 'label' => 'Voir mes paiements', 'url' => '/payments']] : [],
+            'actions' => $client ? [['type' => 'link', 'label' => 'Voir mes paiements', 'url' => route('client.payments.index')]] : [],
         ];
     }
 
+    /**
+     * Génère une réponse listant les prochains rendez-vous du client.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec les rendez-vous à venir
+     */
     private function myAppointmentsResponse($client): array
     {
         if (!$client) {
@@ -377,16 +472,22 @@ class ChatbotController extends Controller
             $text .= "   📆 {$apt->date->format('d/m/Y')} à {$apt->time}\n\n";
         }
 
-        $text .= "👉 [Voir tous mes rendez-vous](/appointments)";
+        $text .= "👉 [Voir tous mes rendez-vous](" . route('client.appointments.index') . ")";
 
         return [
             'text' => $text,
             'suggestions' => ['Nouveau rendez-vous', 'Annuler un RDV', 'Historique'],
             'data' => ['appointments' => $appointments->toArray()],
-            'actions' => [['type' => 'link', 'label' => 'Gérer mes RDV', 'url' => '/appointments']],
+            'actions' => [['type' => 'link', 'label' => 'Gérer mes RDV', 'url' => route('client.appointments.index')]],
         ];
     }
 
+    /**
+     * Génère une réponse sur le programme de fidélité du client.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec points, niveau et avantages fidélité
+     */
     private function loyaltyResponse($client): array
     {
         if (!$client) {
@@ -432,6 +533,12 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse avec l'historique des services du client.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec les derniers rendez-vous terminés
+     */
     private function historyResponse($client): array
     {
         if (!$client) {
@@ -462,15 +569,21 @@ class ChatbotController extends Controller
         }
 
         $text .= "💰 Total dépensé : **{$totalSpent} FCFA**\n\n";
-        $text .= "👉 [Voir l'historique complet](/appointments-history)";
+        $text .= "👉 [Voir l'historique complet](" . route('client.appointments.history') . ")";
 
         return [
             'text' => $text,
             'suggestions' => ['Mes factures', 'Prendre rendez-vous', 'Mes points'],
-            'actions' => [['type' => 'link', 'label' => 'Historique complet', 'url' => '/appointments-history']],
+            'actions' => [['type' => 'link', 'label' => 'Historique complet', 'url' => route('client.appointments.history')]],
         ];
     }
 
+    /**
+     * Génère une réponse listant les factures du client.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec les dernières factures et liens de téléchargement
+     */
     private function invoiceResponse($client): array
     {
         if (!$client) {
@@ -499,16 +612,22 @@ class ChatbotController extends Controller
         foreach ($payments as $payment) {
             $text .= "• **{$payment->appointment->service->name}** - {$payment->amount} FCFA\n";
             $text .= "   📅 {$payment->created_at->format('d/m/Y')}\n";
-            $text .= "   👉 [Télécharger](/payments/{$payment->id}/invoice)\n\n";
+            $text .= "   👉 [Télécharger](" . route('client.payments.show', $payment->id) . ")\n\n";
         }
 
         return [
             'text' => $text,
             'suggestions' => ['Mes paiements', 'Historique', 'Services'],
-            'actions' => [['type' => 'link', 'label' => 'Tous les paiements', 'url' => '/payments']],
+            'actions' => [['type' => 'link', 'label' => 'Tous les paiements', 'url' => route('client.payments.index')]],
         ];
     }
 
+    /**
+     * Génère une réponse avec les informations du profil client.
+     *
+     * @param mixed $client L'objet client authentifié ou null
+     * @return array Réponse avec les données du profil
+     */
     private function profileResponse($client): array
     {
         if (!$client) {
@@ -526,12 +645,17 @@ class ChatbotController extends Controller
                 "**Membre depuis** : {$client->created_at->format('d/m/Y')}\n\n" .
                 "🎖️ Niveau fidélité : **{$client->getLoyaltyLevel()}**\n" .
                 "⭐ Points : **{$client->loyalty_points}**\n\n" .
-                "👉 [Modifier mon profil](/profile)",
+                "👉 [Modifier mon profil](" . route('client.profile') . ")",
             'suggestions' => ['Mes points', 'Mes rendez-vous', 'Changer mot de passe'],
-            'actions' => [['type' => 'link', 'label' => 'Modifier le profil', 'url' => '/profile']],
+            'actions' => [['type' => 'link', 'label' => 'Modifier le profil', 'url' => route('client.profile')]],
         ];
     }
 
+    /**
+     * Génère une réponse d'aide listant les fonctionnalités du chatbot.
+     *
+     * @return array Réponse avec la liste des commandes disponibles
+     */
     private function helpResponse(): array
     {
         return [
@@ -551,6 +675,11 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse de remerciement.
+     *
+     * @return array Réponse avec message de politesse
+     */
     private function thanksResponse(): array
     {
         $responses = [
@@ -565,6 +694,11 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse d'au revoir.
+     *
+     * @return array Réponse de fin de conversation
+     */
     private function byeResponse(): array
     {
         return [
@@ -573,6 +707,11 @@ class ChatbotController extends Controller
         ];
     }
 
+    /**
+     * Génère une réponse par défaut quand l'intention n'est pas reconnue.
+     *
+     * @return array Réponse avec suggestions pour reformuler
+     */
     private function unknownResponse(): array
     {
         return [

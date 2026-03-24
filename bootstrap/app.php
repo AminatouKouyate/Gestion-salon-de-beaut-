@@ -51,6 +51,12 @@ return Application::configure(basePath: dirname(__DIR__))
             
             return route('home');
         });
+
+        $middleware->validateCsrfTokens(except: [
+            'stripe/webhook',
+            'orange-money/callback',
+            'wave/callback',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

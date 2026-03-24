@@ -5,15 +5,22 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder principal de l'application.
+ *
+ * Orchestre l'exécution de tous les seeders dans l'ordre requis :
+ * d'abord les utilisateurs (admin, employé, client), puis les services.
+ */
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Initialise la base de données avec les données de démarrage.
      */
     public function run(): void
     {
         $this->call([
-            TestDataSeeder::class,
+            UserSeeder::class,
+            ServiceSeeder::class,
         ]);
     }
 }

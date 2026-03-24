@@ -1,3 +1,7 @@
+{{--
+    Vue : Menu profil et déconnexion (partial)
+    Description : Composant du menu déroulant de profil avec lien vers le profil et bouton de déconnexion.
+--}}
 <li>
     <a href="{{ route($profile_route) }}">
         <i class="icon-user menu-icon"></i><span class="nav-text">Mon Profil</span>

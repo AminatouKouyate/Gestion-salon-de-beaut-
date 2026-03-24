@@ -1,22 +1,24 @@
-@extends('layouts.master')
+{{--
+    Vue : Liste des rendez-vous employé
+    Description : Page principale des rendez-vous de l'employé : liste des rendez-vous à venir et en cours avec actions disponibles.
+--}}
+@extends('layouts.employee-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Mes Rendez-vous</h4>
-                    <p class="text-muted">Gérez vos rendez-vous assignés</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-calendar"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Mes Rendez-vous</h2>
+                    <p class="beauty-page-subtitle">Gérez vos rendez-vous assignés</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+        </div>
 
-                    <li class="breadcrumb-item"><a href="{{ route('employee.dashboard') }}">Accueil</a></li>
-                    <li class="breadcrumb-item active">Rendez-vous</li>
-                </ol>
-            </div>
-        @if(session('success'))
+        @include('partials.success')
+        @include('partials.error')
 
         <!-- Filtres de vue -->
         <div class="row mb-3">
@@ -37,19 +39,12 @@
                 </div>
             </div>
         </div>
-            <div class="alert alert-success alert-dismissible fade show">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <strong>Succès!</strong> {{ session('success') }}
-            </div>
-        @endif
 
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">
+                <div class="beauty-card">
+                    <div class="beauty-card-header">
+                        <h4><i class="fa fa-calendar mr-2" style="color:var(--primary);"></i>
                             @if($view == 'daily')
                                 Rendez-vous d'Aujourd'hui
                             @elseif($view == 'weekly')
@@ -59,19 +54,18 @@
                             @endif
                         </h4>
                     </div>
-                    <div class="card-body">
+                    <div class="beauty-card-body">
                         @if($appointments->isEmpty())
-                            <div class="text-center py-5">
-                                <i class="fa fa-calendar-o fa-4x text-muted mb-3"></i>
-                                <h5 class="text-muted">Aucun rendez-vous à venir</h5>
-                                <p class="text-muted">Vous n'avez pas de rendez-vous planifiés pour le moment.</p>
+                            <div class="beauty-empty">
+                                <i class="fa fa-calendar-o"></i>
+                                <h5>Aucun rendez-vous</h5>
+                                <p>Vous n'avez pas de rendez-vous planifiés pour le moment.</p>
                             </div>
                         @else
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Date</th>
                                             <th>Heure</th>
                                             <th>Client</th>
@@ -85,26 +79,25 @@
                                     <tbody>
                                         @foreach($appointments as $appointment)
                                         <tr>
-                                            <td>{{ $appointment->id }}</td>
                                             <td>
-                                                <strong>{{ $appointment->date->format('d/m/Y') }}</strong>
+                                                <strong>{{ $appointment->scheduled_at->format('d/m/Y') }}</strong>
                                                 <br>
-                                                <small class="text-muted">{{ $appointment->date->locale('fr')->isoFormat('dddd') }}</small>
+                                                <small class="text-muted">{{ $appointment->scheduled_at->locale('fr')->isoFormat('dddd') }}</small>
                                             </td>
-                                            <td><strong class="text-primary">{{ $appointment->time }}</strong></td>
+                                            <td><strong class="text-primary">{{ $appointment->scheduled_at->format('H:i') }}</strong></td>
                                             <td>
-                                                {{ $appointment->client->name ?? 'N/A' }}
+                                                {{ $appointment->client->name ?? '�' }}
                                                 @if($appointment->client && $appointment->client->email)
                                                     <br><small class="text-muted">{{ $appointment->client->email }}</small>
                                                 @endif
                                             </td>
-                                            <td>{{ $appointment->client->phone ?? 'N/A' }}</td>
+                                            <td>{{ $appointment->client->phone ?? '�' }}</td>
                                             <td>
-                                                <span class="badge badge-info">{{ $appointment->service->name ?? 'N/A' }}</span>
+                                                <span class="badge badge-info">{{ $appointment->service->name ?? '�' }}</span>
                                             </td>
-                                            <td>{{ $appointment->service->duration ?? 'N/A' }} min</td>
+                                            <td>{{ $appointment->service->duration ?? '�' }} min</td>
                                             <td>
-                                                {!! $appointment->getStatusBadge() !!}
+                                                {!! $appointment->status_badge !!}
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group">
@@ -114,7 +107,7 @@
                                                         <i class="fa fa-eye"></i>
                                                     </a>
 
-                                                    @if($appointment->status != 'completed' && $appointment->status != 'canceled')
+                                                    @if($appointment->status->value != 'completed' && $appointment->status->value != 'canceled')
                                                     <button type="button"
                                                             class="btn btn-sm btn-success"
                                                             data-toggle="modal"
@@ -124,6 +117,14 @@
                                                         <i class="fa fa-check"></i>
                                                     </button>
                                                     @endif
+
+                                                    @if($appointment->status->value == 'completed' && !$appointment->payment)
+                                                    <a href="{{ route('employee.payments.create', ['appointment' => $appointment->id]) }}"
+                                                       class="btn btn-sm btn-warning"
+                                                       title="Encaisser le paiement">
+                                                        <i class="fa fa-money"></i>
+                                                    </a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -131,8 +132,7 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <div class="mt-3">
+                            <div class="d-flex justify-content-center mt-3">
                                 {{ $appointments->links() }}
                             </div>
                         @endif
@@ -172,9 +172,8 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     $('#confirmStatusModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Bouton qui a déclenché le modal
-        var appointmentId = button.data('appointment-id'); // Extraire l'ID du rendez-vous
-
+        var button = $(event.relatedTarget);
+        var appointmentId = button.data('appointment-id');
         var form = document.getElementById('statusForm');
         form.action = `/employee/appointments/${appointmentId}/status`;
     });

@@ -1,11 +1,26 @@
-@extends('layouts.master')
+{{--
+    Vue : Détails d'un rendez-vous
+    Route : admin.appointments.show
+    Contrôleur : AppointmentController@show
+    Description : Affiche les informations complètes d'un rendez-vous (client, service,
+                  date, statut, date de création) avec liens de modification.
+--}}
+@extends('layouts.admin-master')
 
+{{-- Section : Contenu principal --}}
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1>Détails du rendez-vous</h1>
+        {{-- Section : En-tête de page --}}
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-calendar-check-o"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Détails du rendez-vous </h2>
+                    <p class="beauty-page-subtitle">Informations complètes</p>
+                </div>
+            </div>
             <div>
                 <a href="{{ route('admin.appointments.edit', $appointment->id) }}"
                    class="btn btn-warning">
@@ -13,20 +28,20 @@
                 </a>
                 <a href="{{ route('admin.appointments.index') }}"
                    class="btn btn-secondary">
-                    Retour
+                    <i class="fa fa-arrow-left mr-2"></i>Retour
                 </a>
             </div>
         </div>
 
-        <div class="card">
-            <div class="card-body">
+        {{-- Section : Messages de succès et d'erreur --}}
+        @include('partials.success')
+        @include('partials.error')
+
+        {{-- Section : Informations détaillées du rendez-vous --}}
+        <div class="beauty-card">
+            <div class="beauty-card-body">
 
                 <table class="table table-bordered">
-                    <tr>
-                        <th>ID</th>
-                        <td>{{ $appointment->id }}</td>
-                    </tr>
-
                     <tr>
                         <th>Client</th>
                         <td>{{ $appointment->client->name ?? '—' }}</td>
@@ -44,11 +59,7 @@
 
                     <tr>
                         <th>Statut</th>
-                        <td>
-                            <span class="badge bg-{{ $appointment->status === 'confirmed' ? 'success' : 'secondary' }}">
-                                {{ ucfirst($appointment->status) }}
-                            </span>
-                        </td>
+                        <td>{!! $appointment->status_badge !!}</td>
                     </tr>
 
                     <tr>

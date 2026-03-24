@@ -4,12 +4,18 @@ namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
+/**
+ * Noyau HTTP de l'application.
+ *
+ * Définit les middlewares globaux, les groupes de middlewares (web, api)
+ * et les middlewares de routes individuels (auth, guest, throttle, etc.).
+ */
 class Kernel extends HttpKernel
 {
     /**
-     * The application's global HTTP middleware stack.
+     * Pile globale des middlewares HTTP.
      *
-     * These middleware are run during every request to your application.
+     * Ces middlewares sont exécutés à chaque requête de l'application.
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
@@ -19,7 +25,7 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware groups.
+     * Groupes de middlewares de routes de l'application.
      */
     protected $middlewareGroups = [
         'web' => [
@@ -38,9 +44,9 @@ class Kernel extends HttpKernel
     ];
 
     /**
-     * The application's route middleware.
+     * Middlewares de routes individuels.
      *
-     * These middleware may be assigned to groups or used individually.
+     * Ces middlewares peuvent être assignés à des groupes ou utilisés individuellement.
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
@@ -52,9 +58,5 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-
-        // ➕ AJOUTE TON MIDDLEWARE DE RÔLE ICI
-        'role' => \App\Http\Middleware\RoleMiddleware::class,
-        'admin' => \App\Http\Middleware\AdminMiddleware::class,
     ];
 }

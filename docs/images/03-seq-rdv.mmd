@@ -1,0 +1,28 @@
+sequenceDiagram
+    actor C as Client
+    participant F as Formulaire RDV
+    participant S as Serveur Laravel
+    participant BD as Base de Donnees
+    C->>F: Choisir un service
+    F->>S: Requete services disponibles
+    S->>BD: SELECT services actifs
+    BD-->>S: Liste des services
+    S-->>F: Afficher services
+    C->>F: Choisir un employe
+    F->>S: Requete employes pour ce service
+    S->>BD: SELECT employes (pivot employee_service)
+    BD-->>S: Liste des employes
+    S-->>F: Afficher employes
+    C->>F: Choisir date et creneau
+    F->>S: Requete creneaux disponibles
+    S->>BD: Verifier horaires, conges, RDV existants
+    BD-->>S: Creneaux libres
+    S-->>F: Afficher creneaux
+    C->>F: Valider le rendez-vous
+    F->>S: POST /client/appointments
+    S->>BD: INSERT appointment (status=pending)
+    BD-->>S: RDV cree
+    S->>BD: INSERT notification employe
+    S->>BD: INSERT notification client
+    S-->>F: Confirmation RDV
+    F-->>C: Afficher confirmation

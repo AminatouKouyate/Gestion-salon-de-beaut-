@@ -1,3 +1,7 @@
+{{--
+    Vue : Menu sidebar - Employé (partial)
+    Description : Liens de navigation de la sidebar pour l'espace employé : tableau de bord, rendez-vous, planning, services, congés, messages, profil.
+--}}
 <li class="nav-label">Employé</li>
 
 <li>
@@ -11,6 +15,13 @@
     <a href="{{ route('employee.appointments.index') }}">
         <i class="icon-calendar"></i>
         <span>Mes rendez-vous</span>
+    </a>
+</li>
+
+<li>
+    <a href="{{ route('employee.schedules.index') }}">
+        <i class="icon-clock"></i>
+        <span>Mon Planning</span>
     </a>
 </li>
 
@@ -29,21 +40,12 @@
 </li>
 
 <li>
-    <a href="{{ route('employee.notifications.index') }}">
-        <i class="icon-bell"></i>
-        <span>Notifications</span>
-        @if(auth('employees')->check() && auth('employees')->user()->unreadNotificationsCount() > 0)
-            <span class="badge badge-danger">{{ auth('employees')->user()->unreadNotificationsCount() }}</span>
-        @endif
+    <a href="{{ route('employee.messages.index') }}">
+        <i class="icon-envelope"></i>
+        <span>Messages Admin</span>
     </a>
 </li>
 
-<li>
-    <a href="#" onclick="event.preventDefault(); document.getElementById('employee-logout-form').submit();">
-        <i class="icon-logout"></i>
-        <span>Déconnexion</span>
-    </a>
-    <form id="employee-logout-form" action="{{ route('employee.logout') }}" method="POST" style="display: none;">
-        @csrf
-    </form>
-</li>
+
+
+

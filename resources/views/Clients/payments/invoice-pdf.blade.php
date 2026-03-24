@@ -1,3 +1,7 @@
+{{--
+    Vue : Facture de paiement - Version PDF
+    Description : Template de facture optimisé pour la génération PDF (DomPDF) avec mise en page simplifiée, informations du salon et du client, tableau des services et total.
+--}}
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +29,7 @@
         <h1>Salon de Beauté</h1>
         <p>Facture</p>
     </div>
-    
+
     <div class="invoice-info">
         <table>
             <tr>
@@ -44,15 +48,16 @@
             </tr>
         </table>
     </div>
-    
+
     <p><strong>Facture N°:</strong> {{ str_pad($payment->id, 6, '0', STR_PAD_LEFT) }}</p>
     <p><strong>Date:</strong> {{ $payment->created_at->format('d/m/Y') }}</p>
-    <p><strong>Statut:</strong> 
-        <span class="status {{ $payment->status === 'completed' ? 'status-completed' : 'status-pending' }}">
-            {{ $payment->status === 'completed' ? 'Payé' : 'En attente' }}
-        </span>
+    <p><strong>Statut:</strong>
+        @php
+            $labelClass = in_array($payment->status, ['paid', 'completed']) ? 'status-completed' : ($payment->status === 'failed' ? 'status-failed' : 'status-pending');
+        @endphp
+        <span class="status {{ $labelClass }}">{{ $payment->status_label }}</span>
     </p>
-    
+
     <table class="items-table">
         <thead>
             <tr>
@@ -71,10 +76,10 @@
             </tr>
         </tbody>
     </table>
-    
+
     <p class="total">Total: {{ number_format($payment->amount, 2, ',', ' ') }} FCFA</p>
-    
-    <p><strong>Méthode de paiement:</strong> 
+
+    <p><strong>Méthode de paiement:</strong>
         @switch($payment->method)
             @case('stripe') Carte bancaire (Stripe) @break
             @case('paypal') PayPal @break
@@ -83,7 +88,7 @@
             @default {{ $payment->method }}
         @endswitch
     </p>
-    
+
     <div class="footer">
         <p>Merci de votre confiance !</p>
         <p>Salon de Beauté - SIRET: XXX XXX XXX XXXXX</p>

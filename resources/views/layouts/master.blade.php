@@ -1,3 +1,7 @@
+{{--
+    Vue : Layout principal - Template de base
+    Description : Template HTML de base hérité par d'autres layouts : preloader, métadonnées, chargement des CSS/JS (Bootstrap, Font Awesome, Chartist, calendrier), gestion du thème sombre et structure de page.
+--}}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,13 +23,20 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Theme Switcher Script (load early to prevent flash) -->
+    <!-- Fonts & landing styles -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="{{ asset('css/landing.css') }}" rel="stylesheet">
+
+    <!-- Theme applied from admin settings -->
     <script>
         (function() {
-            var theme = localStorage.getItem('salon-theme');
-            if (theme === 'dark') {
+            @if($globalDarkMode ?? false)
                 document.documentElement.classList.add('dark-theme');
-            }
+            @endif
+            @if(($globalColorTheme ?? 'rose-gold') !== 'rose-gold')
+                document.documentElement.setAttribute('data-color-theme', '{{ $globalColorTheme }}');
+            @endif
         })();
     </script>
 </head>
@@ -135,7 +146,7 @@
     <script src="{{ asset('plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js') }}"></script>
 
     <script src="{{ asset('js/dashboard/dashboard-1.js') }}"></script>
-    
+
     <!-- Theme Switcher -->
     <script src="{{ asset('js/theme-switcher.js') }}"></script>
 

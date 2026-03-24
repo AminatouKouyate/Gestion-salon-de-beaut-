@@ -1,3 +1,7 @@
+{{--
+    Vue : Inscription client (formulaire simple)
+    Description : Formulaire d'inscription client basique avec nom, email, mot de passe, téléphone et adresse. Utilise le layout dashboard.
+--}}
 @extends('layouts.dashboard')
 
 @section('content')
@@ -43,10 +47,15 @@
 
                         <div class="form-group">
                             <label for="phone">Téléphone</label>
-                            <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}">
-                            @error('phone')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">🇲🇱 +223</span>
+                                </div>
+                                <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" placeholder="XX XX XX XX">
+                                @error('phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
 
                         <div class="form-group">

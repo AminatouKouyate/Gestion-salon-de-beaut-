@@ -7,17 +7,45 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
+/**
+ * Notification d'annulation de rendez-vous.
+ *
+ * Envoyée au client lorsqu'un rendez-vous est annulé.
+ * Contient les détails du rendez-vous annulé et propose
+ * un lien pour effectuer une nouvelle réservation.
+ * Diffusée par email et enregistrée en base de données.
+ */
 class AppointmentCancelledNotification extends Notification
 {
     use Queueable;
 
+    /**
+     * Crée une nouvelle instance de la notification.
+     *
+     * @param  \App\Models\Appointment  $appointment  Le rendez-vous annulé
+     */
     public function __construct(public Appointment $appointment) {}
 
+    /**
+     * Détermine les canaux de diffusion de la notification.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string>  Les canaux utilisés : email et base de données
+     */
     public function via($notifiable): array
     {
         return ['mail', 'database'];
     }
 
+    /**
+     * Construit la représentation email de la notification.
+     *
+     * Informe le client de l'annulation du rendez-vous avec les détails
+     * du service, la date et l'heure, et un lien pour réserver à nouveau.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable): MailMessage
     {
         return (new MailMessage)
@@ -31,6 +59,12 @@ class AppointmentCancelledNotification extends Notification
             ->line('Nous espérons vous revoir bientôt !');
     }
 
+    /**
+     * Construit la représentation en tableau pour le stockage en base de données.
+     *
+     * @param  mixed  $notifiable  L'entité à notifier (client)
+     * @return array<string, mixed>  Les données de l'annulation à stocker
+     */
     public function toArray($notifiable): array
     {
         return [

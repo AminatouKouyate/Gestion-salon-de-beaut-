@@ -1,0 +1,155 @@
+<mxfile host="app.diagrams.net" agent="5.0" modified="2026-03-16T00:00:00.000Z" version="24.0.0" type="device">
+  <diagram name="Activité - Prise de RDV" id="act1">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="2000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <mxCell id="title" value="Diagramme d'Activité — Prise de Rendez-vous" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=18;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="300" y="10" width="500" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="laneClient" value="Client" style="shape=swimlane;startSize=30;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="60" width="400" height="1900" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneSystem" value="Système" style="shape=swimlane;startSize=30;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="440" y="60" width="500" height="1900" as="geometry"/>
+        </mxCell>
+        <mxCell id="laneEmp" value="Employé" style="shape=swimlane;startSize=30;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=14;fontStyle=1;horizontal=0;" vertex="1" parent="1">
+          <mxGeometry x="940" y="60" width="300" height="1900" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="start" value="" style="ellipse;html=1;shape=mxgraph.flowchart.start_2;whiteSpace=wrap;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="210" y="100" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a1" value="Se connecter" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="160" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a2" value="Consulter les services" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="230" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a3" value="Sélectionner un service" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="300" width="170" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s1" value="Charger employés qualifiés&#xa;(table pivot employee_service)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="370" width="250" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a4" value="Choisir un employé" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="450" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a5" value="Sélectionner une date" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="520" width="170" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s2" value="Vérifier planning employé&#xa;(EmployeeSchedule)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="590" width="250" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d1" value="L'employé&#xa;travaille-t-il&#xa;ce jour ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="680" width="130" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s3" value="Afficher message&#xa;'Non disponible'" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="810" y="700" width="150" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s4" value="Vérifier congés approuvés&#xa;(LeaveRequest)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="830" width="250" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d2" value="L'employé&#xa;est-il en&#xa;congé ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="920" width="130" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s5" value="Afficher message&#xa;'En congé'" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="810" y="940" width="150" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s6" value="Calculer créneaux disponibles&#xa;(exclure pauses, RDV existants,&#xa;créneaux bloqués)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="540" y="1070" width="280" height="60" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="d3" value="Des créneaux&#xa;disponibles ?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="620" y="1170" width="130" height="100" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s7" value="Afficher 'Aucun&#xa;créneau disponible'" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="810" y="1190" width="150" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s8" value="Afficher créneaux disponibles" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1320" width="250" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="a6" value="Sélectionner un créneau" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1390" width="170" height="40" as="geometry"/>
+        </mxCell>
+        <mxCell id="a7" value="Valider le rendez-vous" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="1460" width="170" height="40" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="s9" value="Créer RDV&#xa;(statut: En attente)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="560" y="1530" width="250" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="fork" value="" style="shape=line;html=1;strokeWidth=4;strokeColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1620" width="360" height="10" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="n1" value="Envoyer notification&#xa;au client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="490" y="1660" width="180" height="50" as="geometry"/>
+        </mxCell>
+        <mxCell id="n2" value="Envoyer notification&#xa;à l'employé" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="990" y="1660" width="180" height="50" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="join" value="" style="shape=line;html=1;strokeWidth=4;strokeColor=#000000;fillColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="500" y="1740" width="360" height="10" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="end" value="" style="ellipse;html=1;shape=doubleCircle;whiteSpace=wrap;fillColor=#000000;strokeColor=#000000;" vertex="1" parent="1">
+          <mxGeometry x="665" y="1790" width="30" height="30" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="f0" style="endArrow=block;endFill=1;" edge="1" source="start" target="a1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f1" style="endArrow=block;endFill=1;" edge="1" source="a1" target="a2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f2" style="endArrow=block;endFill=1;" edge="1" source="a2" target="a3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f3" style="endArrow=block;endFill=1;" edge="1" source="a3" target="s1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f4" style="endArrow=block;endFill=1;" edge="1" source="s1" target="a4" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f5" style="endArrow=block;endFill=1;" edge="1" source="a4" target="a5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f6" style="endArrow=block;endFill=1;" edge="1" source="a5" target="s2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f7" style="endArrow=block;endFill=1;" edge="1" source="s2" target="d1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f8" value="Non" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#FF0000;" edge="1" source="d1" target="s3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f8b" style="endArrow=block;endFill=1;dashed=1;" edge="1" source="s3" target="a5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f9" value="Oui" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#00AA00;" edge="1" source="d1" target="s4" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f10" style="endArrow=block;endFill=1;" edge="1" source="s4" target="d2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f11" value="Oui" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#FF0000;" edge="1" source="d2" target="s5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f11b" style="endArrow=block;endFill=1;dashed=1;" edge="1" source="s5" target="a5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f12" value="Non" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#00AA00;" edge="1" source="d2" target="s6" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f13" style="endArrow=block;endFill=1;" edge="1" source="s6" target="d3" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f14" value="Non" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#FF0000;" edge="1" source="d3" target="s7" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f14b" style="endArrow=block;endFill=1;dashed=1;" edge="1" source="s7" target="a5" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f15" value="Oui" style="endArrow=block;endFill=1;fontSize=11;fontStyle=1;fontColor=#00AA00;" edge="1" source="d3" target="s8" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+        <mxCell id="f16" style="endArrow=block;endFill=1;" edge="1" source="s8" target="a6" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f17" style="endArrow=block;endFill=1;" edge="1" source="a6" target="a7" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f18" style="endArrow=block;endFill=1;" edge="1" source="a7" target="s9" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f19" style="endArrow=block;endFill=1;" edge="1" source="s9" target="fork" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f20" style="endArrow=block;endFill=1;" edge="1" source="fork" target="n1" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f21" style="endArrow=block;endFill=1;" edge="1" source="fork" target="n2" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f22" style="endArrow=block;endFill=1;" edge="1" source="n1" target="join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f23" style="endArrow=block;endFill=1;" edge="1" source="n2" target="join" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="f24" style="endArrow=block;endFill=1;" edge="1" source="join" target="end" parent="1"><mxGeometry relative="1" as="geometry"/></mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

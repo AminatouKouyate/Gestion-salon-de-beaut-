@@ -7,17 +7,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * Contrôleur pour l'authentification des employés.
+ * 
+ * Gère la connexion, la déconnexion et l'affichage du formulaire
+ * de connexion pour les employés du salon.
+ */
 class EmployeeLoginController extends Controller
 {
     /**
-     * Where to redirect employees after login.
+     * URL de redirection après connexion réussie.
      *
      * @var string
      */
     protected $redirectTo = '/employee/dashboard';
 
     /**
-     * Show the application's login form.
+     * Affiche le formulaire de connexion pour les employés.
      *
      * @return \Illuminate\View\View
      */
@@ -27,7 +33,7 @@ class EmployeeLoginController extends Controller
     }
 
     /**
-     * Get the guard to be used during authentication.
+     * Retourne le guard d'authentification utilisé pour les employés.
      *
      * @return \Illuminate\Contracts\Auth\StatefulGuard
      */
@@ -37,11 +43,14 @@ class EmployeeLoginController extends Controller
     }
 
     /**
-     * Handle an authentication attempt.
+     * Traite une tentative de connexion d'un employé.
+     * 
+     * Valide les identifiants, tente l'authentification et régénère
+     * la session en cas de succès.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request  $request  La requête contenant email et mot de passe
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Illuminate\Validation\ValidationException  Si les identifiants sont invalides
      */
     public function login(Request $request)
     {
@@ -50,19 +59,23 @@ class EmployeeLoginController extends Controller
             'password' => ['required', 'string'],
         ]);
 
+        // Tentative d'authentification avec le guard employé
         if (! $this->guard()->attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             throw ValidationException::withMessages([
                 'email' => __('auth.failed'),
             ]);
         }
 
+        // Régénération de la session pour sécurité
         $request->session()->regenerate();
 
         return redirect()->intended($this->redirectTo);
     }
 
     /**
-     * Log the user out of the application.
+     * Déconnecte l'employé de l'application.
+     * 
+     * Invalide la session et régénère le token CSRF.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\RedirectResponse

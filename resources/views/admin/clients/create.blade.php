@@ -1,19 +1,36 @@
-<<<<<<< HEAD
-@extends('layouts.master')
-=======
-@extends('admin.layouts.master')
->>>>>>> 081d553c768bc74407e818ea7ccc2aff5c09f014
+{{--
+    Vue : Création d'un client
+    Route : admin.clients.create
+    Contrôleur : ClientController@create
+    Description : Formulaire d'enregistrement d'un nouveau client avec les champs
+                  nom, email, téléphone et mot de passe.
+--}}
+@extends('layouts.admin-master')
 
+{{-- Section : Contenu principal --}}
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Ajouter un client</h1>
-    <a href="{{ route('admin.clients.index') }}" class="btn btn-secondary">Retour à la liste</a>
+<div class="beauty-page-header">
+    <div class="beauty-page-header-left">
+        <div class="beauty-page-icon"><i class="fa fa-heart"></i></div>
+        <div>
+            <h2 class="beauty-page-title">Ajouter un client </h2>
+            <p class="beauty-page-subtitle">Enregistrer un nouveau client</p>
+        </div>
+    </div>
+    <a href="{{ route('admin.clients.index') }}" class="btn btn-secondary">
+        <i class="fa fa-arrow-left mr-2"></i>Retour à la liste
+    </a>
 </div>
 
-<div class="card">
-    <div class="card-body">
+{{-- Section : Messages de succès et d'erreur --}}
+@include('partials.success')
+@include('partials.error')
+
+{{-- Section : Formulaire de création --}}
+<div class="beauty-card">
+    <div class="beauty-card-body">
         <form action="{{ route('admin.clients.store') }}" method="POST">
             @csrf
             <div class="mb-3">
@@ -28,8 +45,11 @@
             </div>
             <div class="mb-3">
                 <label for="phone" class="form-label">Téléphone</label>
-                <input type="tel" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}">
-                @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                <div class="input-group">
+                    <div class="input-group-prepend"><span class="input-group-text">🇲🇱 +223</span></div>
+                    <input type="tel" name="phone" id="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" placeholder="XX XX XX XX">
+                    @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Mot de passe</label>

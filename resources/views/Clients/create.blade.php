@@ -1,3 +1,7 @@
+{{--
+    Vue : Prise de rendez-vous (formulaire simplifié)
+    Description : Formulaire simplifié de prise de rendez-vous avec sélection de service, date et heure. Version basique utilisant le layout master.
+--}}
 @extends('layouts.master')
 
 @section('content')

@@ -1,3 +1,7 @@
+{{--
+    Vue : Liste des clients (admin)
+    Description : Tableau paginé de tous les clients enregistrés avec nom, email, téléphone, date d'inscription et actions (voir, modifier).
+--}}
 @extends('layouts.master')
 
 @section('content')
@@ -28,7 +32,6 @@
                     <table class="table table-striped">
                         <thead class="thead-dark">
                             <tr>
-                                <th>ID</th>
                                 <th>Nom</th>
                                 <th>Email</th>
                                 <th>Téléphone</th>
@@ -39,10 +42,9 @@
                         <tbody>
                             @forelse($clients as $client)
                             <tr>
-                                <td>{{ $client->id }}</td>
                                 <td>{{ $client->name }}</td>
                                 <td>{{ $client->email }}</td>
-                                <td>{{ $client->phone ?? 'N/A' }}</td>
+                                <td>{{ $client->phone ?? '�' }}</td>
                                 <td>{{ $client->created_at->format('d/m/Y') }}</td>
                                 <td>
                                     <a href="{{ route('admin.clients.show', $client->id) }}" class="btn btn-info btn-sm">Voir</a>
@@ -51,7 +53,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6" class="text-center">Aucun client trouvé.</td>
+                                <td colspan="5" class="text-center">Aucun client trouvé.</td>
                             </tr>
                             @endforelse
                         </tbody>

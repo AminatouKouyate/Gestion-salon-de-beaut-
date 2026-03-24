@@ -1,91 +1,54 @@
-<!DOCTYPE html>
-<html lang="fr" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Inscription - Rosella</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-</head>
+{{--
+    Vue : Page d'inscription (générale)
+    Description : Formulaire d'inscription générale avec nom, email, mot de passe et confirmation.
+--}}
+@extends('auth.layout')
 
-<body class="h-100">
+@section('title','Inscription - KAARJA Beauté')
 
-<div id="preloader">
-    <div class="loader">
-        <svg class="circular" viewBox="25 25 50 50">
-            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"/>
-        </svg>
+@section('left')
+    <div class="left-content">
+        <div class="form-logo"><i class="fa fa-user-plus"></i></div>
+        <h2>Rejoignez KAARJA Beauté</h2>
+        <div class="gold-line"></div>
+        <p class="left-subtitle">Créez votre compte et accédez à nos services exclusifs.</p>
     </div>
-</div>
+@endsection
 
-<div class="login-form-bg h-100">
-    <div class="container h-100">
-        <div class="row justify-content-center h-100">
-            <div class="col-xl-6">
-                <div class="form-input-content">
-                    <div class="card login-form mb-0">
-                        <div class="card-body pt-5">
-
-                            <a class="text-center" href="#">
-                                <h4>Gestion Salon</h4>
-                            </a>
-
-                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('register') }}">
-                                @csrf
-                                {{-- Affiche les erreurs de validation/authentification --}}
-                                @if ($errors->any())
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            @foreach ($errors->all() as $error)
-                                                <li>{{ $error }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                @endif
-                                <div class="form-group">
-                                    <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Nom" required>
-                                    @error('name')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Adresse e-mail" required>
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control @error('password') is-invalid @enderror" name="password" placeholder="Mot de passe" required>
-                                    @error('password')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
-                                </div>
-                                <button class="btn login-form__btn submit w-100" type="submit">S'inscrire</button>
-                            </form>
-
-                            <p class="mt-5 login-form__footer">
-                                Vous avez déjà un compte ?
-                                <a href="{{ route('login') }}" class="text-primary">Se connecter</a>
-                            </p>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
+@section('right')
+    @if ($errors->any())
+        <div class="alert-luxury alert-danger" role="alert">
+            <ul class="mb-0 pl-3" style="list-style:none;">
+                @foreach ($errors->all() as $error)
+                    <li><i class="fa fa-exclamation-circle mr-1"></i>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
-    </div>
-</div>
+    @endif
 
-<script src="{{ asset('plugins/common/common.min.js') }}"></script>
-<script src="{{ asset('js/custom.min.js') }}"></script>
+    <form method="POST" action="{{ route('register') }}" autocomplete="off">
+        @csrf
+        <div class="form-group">
+            <label><i class="fa fa-user"></i> Nom complet</label>
+            <input type="text" class="input-luxury @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Nom" required autofocus>
+        </div>
+        <div class="form-group">
+            <label><i class="fa fa-envelope"></i> Email</label>
+            <input type="email" class="input-luxury @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" placeholder="Adresse e-mail" required>
+        </div>
+        <div class="form-group">
+            <label><i class="fa fa-lock"></i> Mot de passe</label>
+            <input type="password" class="input-luxury @error('password') is-invalid @enderror" name="password" placeholder="Mot de passe" required>
+        </div>
+        <div class="form-group">
+            <label><i class="fa fa-lock"></i> Confirmer</label>
+            <input type="password" class="input-luxury" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
+        </div>
 
-</body>
-</html>
+        <button class="btn-luxury" type="submit">S'inscrire</button>
+
+        <div class="text-center mt-3">
+            <a href="{{ route('login') }}" class="back-link">Vous avez déjà un compte ? Se connecter</a>
+        </div>
+    </form>
+@endsection

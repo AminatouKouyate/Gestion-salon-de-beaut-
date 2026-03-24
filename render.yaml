@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: salon2
+    runtime: docker
+    rootDir: /
+    autoDeploy: true
+    envVars:
+      - key: APP_KEY
+        sync: false
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"

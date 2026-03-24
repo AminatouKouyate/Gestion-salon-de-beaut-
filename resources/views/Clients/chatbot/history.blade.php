@@ -1,28 +1,30 @@
-@extends('layouts.master')
+{{--
+    Vue : Historique des conversations du chatbot
+    Description : Affiche l'historique des échanges entre le client et l'assistant IA, groupés par date avec les messages utilisateur et les réponses du bot.
+--}}
+@extends('layouts.client-master')
 
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
-        <div class="row page-titles mx-0">
-            <div class="col-sm-6 p-md-0">
-                <div class="welcome-text">
-                    <h4>Historique des conversations</h4>
-                    <p class="text-muted">Retrouvez vos échanges avec l'assistant</p>
+        <div class="beauty-page-header">
+            <div class="beauty-page-header-left">
+                <div class="beauty-page-icon"><i class="fa fa-history"></i></div>
+                <div>
+                    <h2 class="beauty-page-title">Historique des conversations</h2>
+                    <p class="beauty-page-subtitle">Retrouvez vos échanges avec l'assistant</p>
                 </div>
             </div>
-            <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
-                <a href="{{ route('client.chatbot.index') }}" class="btn btn-primary">
-                    <i class="fa fa-comments mr-2"></i>Nouvelle conversation
-                </a>
-            </div>
+            <a href="{{ route('client.chatbot.index') }}" class="beauty-btn-primary"><i class="fa fa-comments mr-2"></i>Nouvelle conversation</a>
         </div>
 
         <div class="card">
             <div class="card-body">
                 @if($conversations->isEmpty())
-                    <div class="text-center py-5">
-                        <i class="fa fa-comments fa-3x text-muted mb-3"></i>
-                        <p class="text-muted">Aucune conversation enregistrée</p>
+                    <div class="beauty-empty">
+                        <i class="fa fa-comments"></i>
+                        <h5>Aucune conversation enregistrée</h5>
+                        <p>Vous n'avez pas encore échangé avec l'assistant</p>
                         <a href="{{ route('client.chatbot.index') }}" class="btn btn-primary">
                             Démarrer une conversation
                         </a>

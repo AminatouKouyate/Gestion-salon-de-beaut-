@@ -1,3 +1,7 @@
+{{--
+    Vue : Boutons d'actions (partial)
+    Description : Composant réutilisable pour les boutons d'actions standards (voir, modifier, supprimer) dans les tableaux.
+--}}
 @php
     if (isset($employee)) {
         $item = $employee;
@@ -19,7 +23,7 @@
     <i class="fa fa-pencil"></i>
 </a>
 
-<form action="{{ route($routePrefix . '.destroy', $item) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer {{ $label }} ?');">
+<form action="{{ route($routePrefix . '.destroy', $item) }}" method="POST" style="display:inline-block;" class="confirm-delete" data-confirm-message="Êtes-vous sûr de vouloir supprimer {{ $label }} ?">
     @csrf
     @method('DELETE')
     <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">

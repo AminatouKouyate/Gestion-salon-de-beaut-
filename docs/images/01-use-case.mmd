@@ -1,0 +1,53 @@
+graph TB
+    subgraph Acteurs
+        Admin((Admin))
+        Client((Client))
+        Employe((Employe))
+    end
+    subgraph CasAdmin[Cas Admin]
+        A1[Gerer employes]
+        A2[Gerer clients]
+        A3[Gerer services]
+        A4[Gerer RDV]
+        A5[Gerer stocks]
+        A6[Consulter paiements]
+        A7[Approuver conges]
+        A8[Repondre messages]
+        A9[Generer rapports]
+        A10[Gerer planning]
+        A11[Bloquer creneaux]
+        A12[Gerer theme]
+        A13[Gerer profil]
+        A14[Tableau de bord]
+    end
+    subgraph CasClient[Cas Client]
+        C1[Consulter services]
+        C2[Prendre RDV]
+        C3[Annuler RDV]
+        C4[Historique RDV]
+        C5[Effectuer paiement]
+        C6[Telecharger facture]
+        C7[Utiliser chatbot]
+        C8[Gerer profil]
+        C9[Notifications]
+        C10[Calendrier RDV]
+        C11[Desactiver compte]
+        C12[Points fidelite]
+    end
+    subgraph CasEmploye[Cas Employe]
+        E1[Voir RDV assignes]
+        E2[Statut RDV]
+        E3[Notes RDV]
+        E4[Calendrier]
+        E5[Demander conge]
+        E6[Message admin]
+        E7[Consulter planning]
+        E8[Gerer profil]
+        E9[Notifications]
+        E10[Consulter services]
+        E11[Gerer paiements]
+        E12[Historique RDV]
+    end
+    Admin --- A1 & A2 & A3 & A4 & A5 & A6 & A7 & A8 & A9 & A10 & A11 & A12 & A13 & A14
+    Client --- C1 & C2 & C3 & C4 & C5 & C6 & C7 & C8 & C9 & C10 & C11 & C12
+    Employe --- E1 & E2 & E3 & E4 & E5 & E6 & E7 & E8 & E9 & E10 & E11 & E12

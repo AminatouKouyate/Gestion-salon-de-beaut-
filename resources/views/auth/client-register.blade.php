@@ -1,88 +1,116 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Inscription Client - Rosella</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-</head>
+{{--
+    Vue : Page d'inscription client
+    Description : Formulaire d'inscription pour les nouveaux clients avec nom, email, téléphone, mot de passe et confirmation.
+--}}
+@extends('auth.layout')
 
-<body class="h-100">
+@section('title','Inscription - KAARJA Beauté')
 
-<div id="preloader">
-    <div class="loader">
-        <svg class="circular" viewBox="25 25 50 50">
-            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"/>
-        </svg>
+@section('left')
+    <div class="left-content">
+        <div class="left-icon"></div>
+        <h2>Rejoignez <span>KAARJA Beauté</span></h2>
+        <div class="gold-line"></div>
+        <p class="left-subtitle">Créez votre compte et accédez à nos services exclusifs, programme fidélité et réservation en ligne.</p>
+        <ul class="left-features">
+            <li><i class="fa fa-calendar"></i> Réservation en ligne 24h/24</li>
+            <li><i class="fa fa-heart"></i> Programme de fidélité</li>
+            <li><i class="fa fa-gift"></i> Offres exclusives membres</li>
+            <li><i class="fa fa-star"></i> Suivi personnalisé</li>
+        </ul>
     </div>
-</div>
+@endsection
 
-<div class="login-form-bg h-100">
-    <div class="container h-100">
-        <div class="row justify-content-center h-100">
-            <div class="col-xl-6">
-                <div class="form-input-content">
-                    <div class="card login-form mb-0">
-                        <div class="card-body pt-5">
+@section('right')
+    <div class="form-logo"><i class="fa fa-user-plus"></i></div>
+    <h3>Créer un Compte</h3>
+    <p class="form-tagline">Remplissez vos informations pour commencer</p>
 
-                            <a class="text-center" href="#">
-                                <h4>Inscription Client</h4>
-                            </a>
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger mt-3">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
-
-                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('client.register') }}">
-                                @csrf
-
-                                <div class="form-group">
-                                    <input type="text" class="form-control" name="name" placeholder="Nom complet" value="{{ old('name') }}" required autofocus>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="tel" class="form-control" name="phone" placeholder="Téléphone (optionnel)" value="{{ old('phone') }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="password" class="form-control" name="password" placeholder="Mot de passe (min. 8 caractères)" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirmer le mot de passe" required>
-                                </div>
-
-                                <button class="btn login-form__btn submit w-100" type="submit">S'inscrire</button>
-                            </form>
-                            <p class="mt-3 text-center">Déjà un compte ? <a href="{{ route('client.login') }}">Connectez-vous</a></p>
-
-                            <hr>
-
-                            <p class="text-center mt-3">
-                                <a href="{{ route('home') }}" class="text-muted">
-                                    <i class="fa fa-arrow-left"></i> Retour à l'accueil
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+    @if ($errors->any())
+        <div class="alert-luxury alert-danger" role="alert">
+            <i class="fa fa-exclamation-circle" style="margin-top:2px;"></i>
+            <div>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
-    </div>
-</div>
+    @endif
 
-<script src="{{ asset('plugins/common/common.min.js') }}"></script>
-<script src="{{ asset('js/custom.min.js') }}"></script>
+    @if(session('success'))
+        <div class="alert-luxury alert-success" role="alert">
+            <i class="fa fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
 
-</body>
-</html>
+    <form method="POST" action="{{ url('/client/register') }}" autocomplete="off">
+        @csrf
+
+        <div class="form-group-luxury">
+            <label for="name"><i class="fa fa-user"></i> Nom complet</label>
+            <input type="text" class="input-luxury @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name') }}" placeholder="Votre nom complet" required autofocus>
+        </div>
+
+        <div class="form-group-luxury">
+            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+            <input type="email" class="input-luxury @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="votre@email.com" required>
+        </div>
+
+        <div class="form-group-luxury">
+            <label for="phone"><i class="fa fa-phone"></i> Téléphone</label>
+            <input type="tel" class="input-luxury @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone') }}" placeholder="+223 XX XX XX XX">
+        </div>
+
+        <div class="form-group-luxury">
+            <label for="password"><i class="fa fa-lock"></i> Mot de passe</label>
+            <div class="password-wrapper">
+                <input type="password" class="input-luxury @error('password') is-invalid @enderror" id="password" name="password" placeholder="••••••••" required>
+                <button type="button" class="password-toggle" onclick="togglePasswordVisibility('password','password-eye')" aria-label="Afficher le mot de passe">
+                    <i class="fa fa-eye" id="password-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-group-luxury">
+            <label for="password_confirmation"><i class="fa fa-lock"></i> Confirmer le mot de passe</label>
+            <div class="password-wrapper">
+                <input type="password" class="input-luxury" id="password_confirmation" name="password_confirmation" placeholder="••••••••" required>
+                <button type="button" class="password-toggle" onclick="togglePasswordVisibility('password_confirmation','confirm-eye')" aria-label="Afficher le mot de passe">
+                    <i class="fa fa-eye" id="confirm-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-luxury">
+            <i class="fa fa-user-plus"></i> Créer mon Compte
+        </button>
+    </form>
+
+    <div class="divider-luxury"><span>ou</span></div>
+
+    <a href="{{ route('client.login') }}" class="btn-register-luxury">
+        <i class="fa fa-sign-in"></i> J'ai déjà un compte
+    </a>
+    <a href="{{ route('home') }}" class="back-link"><i class="fa fa-arrow-left"></i> Retour à l'accueil</a>
+@endsection
+
+@push('scripts')
+<script>
+function togglePasswordVisibility(inputId, eyeId) {
+    var input = document.getElementById(inputId);
+    var eye = document.getElementById(eyeId);
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.classList.remove('fa-eye');
+        eye.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        eye.classList.remove('fa-eye-slash');
+        eye.classList.add('fa-eye');
+    }
+}
+</script>
+@endpush

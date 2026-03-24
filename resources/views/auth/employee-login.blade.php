@@ -1,82 +1,115 @@
-<!DOCTYPE html>
-<html lang="en" class="h-100">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Connexion Employé - Rosella</title>
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-</head>
+{{--
+    Vue : Page de connexion employé
+    Description : Formulaire de connexion pour les employés du salon avec email, mot de passe et lien de récupération.
+--}}
+@extends('auth.layout')
 
-<body class="h-100">
+@section('title','Connexion Employé - KAARJA Beauté')
 
-<div id="preloader">
-    <div class="loader">
-        <svg class="circular" viewBox="25 25 50 50">
-            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3"/>
-        </svg>
+@section('left')
+    <div class="left-content">
+        <div class="left-icon"><i class="fa fa-user-md"></i></div>
+        <h2>Portail <span>Employé</span></h2>
+        <div class="gold-line"></div>
+        <p class="left-subtitle">Gérez vos rendez-vous, planning et communiquez avec l'administration.</p>
+        <ul class="left-features">
+            <li><i class="fa fa-calendar"></i> Gestion des rendez-vous</li>
+            <li><i class="fa fa-clock-o"></i> Planning & horaires</li>
+            <li><i class="fa fa-envelope"></i> Messagerie interne</li>
+            <li><i class="fa fa-scissors"></i> Services assignés</li>
+        </ul>
     </div>
-</div>
+@endsection
 
-<div class="login-form-bg h-100">
-    <div class="container h-100">
-        <div class="row justify-content-center h-100">
-            <div class="col-xl-6">
-                <div class="form-input-content">
-                    <div class="card login-form mb-0">
-                        <div class="card-body pt-5">
+@section('right')
+    <div class="form-logo"><i class="fa fa-user-md"></i></div>
+    <h3>Connexion Employé</h3>
+    <p class="form-tagline">Accédez à votre espace de travail</p>
 
-                            <a class="text-center" href="#">
-                                <h4>Connexion Employé</h4>
-                            </a>
+    @if(session('error'))
+        <div class="alert-luxury alert-danger" role="alert">
+            <i class="fa fa-exclamation-circle"></i>
+            <span>{{ session('error') }}</span>
+        </div>
+    @endif
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger mt-3">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @endif
+    @if(session('success'))
+        <div class="alert-luxury alert-success" role="alert">
+            <i class="fa fa-check-circle"></i>
+            <span>{{ session('success') }}</span>
+        </div>
+    @endif
 
-                            <form class="mt-5 mb-5 login-input" method="POST" action="{{ route('employee.login') }}">
-                                @csrf
+    @if(session('status'))
+        <div class="alert-luxury alert-success" role="alert">
+            <i class="fa fa-check-circle"></i>
+            <span>{{ session('status') }}</span>
+        </div>
+    @endif
 
-                                <div class="form-group">
-                                    <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') }}" required>
-                                </div>
-
-                                <div class="form-group">
-                                    <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
-                                </div>
-
-                                <div class="form-row d-flex justify-content-between mt-4 mb-2">
-                                    <div class="form-group">
-                                        {{-- Le lien pour la réinitialisation du mot de passe employé sera ajouté ici --}}
-                                        {{-- <a href="#">Mot de passe oublié ?</a> --}}
-                                    </div>
-                                </div>
-
-                                <button class="btn login-form__btn submit w-100" type="submit">Se connecter</button>
-                            </form>
-
-                            <hr>
-
-                            <p class="text-center mt-3">
-                                <a href="{{ route('home') }}" class="text-muted">
-                                    <i class="fa fa-arrow-left"></i> Retour à l'accueil
-                                </a>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+    @if($errors->any())
+        <div class="alert-luxury alert-danger" role="alert">
+            <i class="fa fa-exclamation-circle" style="margin-top:2px;"></i>
+            <div>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
         </div>
-    </div>
-</div>
+    @endif
 
-<script src="{{ asset('plugins/common/common.min.js') }}"></script>
-<script src="{{ asset('js/custom.min.js') }}"></script>
+    <form method="POST" action="{{ url('/employee/login') }}" autocomplete="off">
+        @csrf
 
-</body>
-</html>
+        <div class="form-group-luxury">
+            <label for="email"><i class="fa fa-envelope"></i> Adresse email</label>
+            <input type="email" class="input-luxury @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email') }}" placeholder="votre@email.com" required autofocus autocomplete="username">
+        </div>
+
+        <div class="form-group-luxury">
+            <label for="password"><i class="fa fa-lock"></i> Mot de passe</label>
+            <div class="password-wrapper">
+                <input type="password" class="input-luxury @error('password') is-invalid @enderror" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                <button type="button" class="password-toggle" onclick="togglePasswordVisibility()" aria-label="Afficher le mot de passe">
+                    <i class="fa fa-eye" id="password-eye"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="form-extras">
+            <label class="custom-check-luxury">
+                <input type="checkbox" id="remember" name="remember" {{ old('remember') ? 'checked' : '' }}>
+                <span>Se souvenir de moi</span>
+            </label>
+            <a href="{{ route('employee.password.request') }}" class="forgot-link">Mot de passe oublié ?</a>
+        </div>
+
+        <button type="submit" class="btn-luxury">
+            <i class="fa fa-sign-in"></i> Se connecter
+        </button>
+    </form>
+
+    <div class="divider-luxury"><span>ou</span></div>
+
+    <a href="{{ route('home') }}" class="back-link"><i class="fa fa-arrow-left"></i> Retour à l'accueil</a>
+@endsection
+
+@push('scripts')
+<script>
+function togglePasswordVisibility() {
+    const input = document.getElementById('password');
+    const eye = document.getElementById('password-eye');
+    if (input.type === 'password') {
+        input.type = 'text';
+        eye.classList.remove('fa-eye');
+        eye.classList.add('fa-eye-slash');
+    } else {
+        input.type = 'password';
+        eye.classList.remove('fa-eye-slash');
+        eye.classList.add('fa-eye');
+    }
+}
+</script>
+@endpush

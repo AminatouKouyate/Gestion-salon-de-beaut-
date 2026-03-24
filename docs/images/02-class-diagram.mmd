@@ -1,0 +1,164 @@
+classDiagram
+    direction TB
+    class Utilisateur_Admin {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string role
+        +string photo
+        +hasRole(string) bool
+        +hasAnyRole(array) bool
+    }
+    class Client {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string phone
+        +string address
+        +string allergies
+        +int loyalty_points
+        +int total_appointments
+        +bool active
+        +string photo
+        +addLoyaltyPoints(int) void
+        +useLoyaltyPoints(int) bool
+        +getLoyaltyLevel() string
+        +getLoyaltyDiscount() int
+    }
+    class Employe {
+        +int id
+        +string name
+        +string email
+        +string password
+        +string phone
+        +string role
+        +bool is_active
+        +string specialties
+        +array work_days
+        +string photo
+        +isAvailableAt(datetime) bool
+        +getAvailableSlotsForDate(date, int) array
+    }
+    class Service {
+        +int id
+        +string name
+        +string description
+        +float price
+        +float promotion_price
+        +int duration
+        +string category
+        +string gender
+        +bool active
+        +hasActivePromotion() bool
+        +getCurrentPrice() float
+    }
+    class RendezVous {
+        +int id
+        +int client_id
+        +int service_id
+        +int employee_id
+        +datetime scheduled_at
+        +enum status
+        +string notes
+        +bool reminder_sent
+    }
+    class Paiement {
+        +int id
+        +int client_id
+        +int appointment_id
+        +float amount
+        +string method
+        +string status
+        +string transaction_id
+    }
+    class Stock {
+        +int id
+        +string name
+        +string category
+        +int quantity
+        +int alert_threshold
+        +isLowStock() bool
+    }
+    class DemandeConge {
+        +int id
+        +int employee_id
+        +date start_date
+        +date end_date
+        +string reason
+        +string status
+        +string admin_response
+    }
+    class HoraireEmploye {
+        +int id
+        +int employee_id
+        +int day_of_week
+        +time start_time
+        +time end_time
+        +bool is_working
+    }
+    class CreneauBloque {
+        +int id
+        +int employee_id
+        +datetime start_datetime
+        +datetime end_datetime
+        +string reason
+        +int created_by
+    }
+    class MessageChat {
+        +int id
+        +int client_id
+        +string message
+        +string response
+        +string intent
+        +bool is_user_message
+    }
+    class MessageEmploye {
+        +int id
+        +int employee_id
+        +string subject
+        +string message
+        +string status
+        +string admin_response
+    }
+    class NotificationClient {
+        +int id
+        +int client_id
+        +string type
+        +string title
+        +string message
+        +bool read
+    }
+    class NotificationEmploye {
+        +int id
+        +int employee_id
+        +string title
+        +string message
+        +string type
+        +bool is_read
+    }
+    class Parametre {
+        +int id
+        +string color_theme
+        +bool dark_mode
+    }
+    Client "1" --> "*" RendezVous : prend
+    Employe "1" --> "*" RendezVous : assigne
+    Service "1" --> "*" RendezVous : concerne
+    RendezVous "1" --> "0..1" Paiement : genere
+    Client "1" --> "*" Paiement : effectue
+    Employe "*" --> "*" Service : realise
+    Employe "1" --> "*" DemandeConge : soumet
+    Employe "1" --> "*" HoraireEmploye : possede
+    Employe "1" --> "*" CreneauBloque : a
+    Utilisateur_Admin "1" --> "*" CreneauBloque : cree
+    Client "1" --> "*" MessageChat : envoie
+    Employe "1" --> "*" MessageEmploye : envoie
+    Client "1" --> "*" NotificationClient : recoit
+    Employe "1" --> "*" NotificationEmploye : recoit
+    Utilisateur_Admin "1" ..> "*" Employe : gere
+    Utilisateur_Admin "1" ..> "*" Client : gere
+    Utilisateur_Admin "1" ..> "*" Service : gere
+    Utilisateur_Admin "1" ..> "*" Stock : gere
+    Utilisateur_Admin "1" ..> "1" Parametre : configure

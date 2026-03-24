@@ -1,3 +1,7 @@
+{{--
+    Vue : Layout page des services (prototype)
+    Description : Page de prototype/test pour les services avec des champs de formulaire de démonstration. Non utilisée en production.
+--}}
 @extends('master')
 @section('content')
             <div class="content-body">
