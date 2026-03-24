@@ -42,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Forcer HTTPS en production (Render est derrière un proxy HTTPS)
+        if (config('app.env') === 'production') {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
+
         // Utiliser Bootstrap 4 pour la pagination
         Paginator::useBootstrap();
 
